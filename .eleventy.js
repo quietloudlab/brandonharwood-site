@@ -41,11 +41,17 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/styles");
   eleventyConfig.addPassthroughCopy("src/scripts");
   eleventyConfig.addPassthroughCopy("src/content/posts");
+  eleventyConfig.addPassthroughCopy("src/content/posts/**/img_*.jpg");
 
-  return {
-    dir: {
-      input: "src",
-      output: "_site"
-    }
-  };
+return {
+  dir: {
+    input: "src",
+    output: "_site",
+    includes: "_includes",
+    layouts: "layouts"
+  },
+  pathPrefix: "/",
+  templateFormats: ["njk", "md"],
+  markdownTemplateEngine: "njk"
+};
 };
