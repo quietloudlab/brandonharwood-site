@@ -1,30 +1,182 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }}</title>
-  <link rel="stylesheet" href="/styles/main.css">
-</head>
-<body>
-  <header>
-    <a href="/">← Back to home</a>
-  </header>
-  <main>
-    <h1>{{ title }}</h1>
+---
+layout: base.njk
+---
 
-    {% if image %}
-      <figure>
-        {% image image, image_alt, "lazy", image_class %}
-        {% if image_alt %}
-          <figcaption>{{ image_alt }}</figcaption>
-        {% endif %}
-      </figure>
+<article class="container mx-auto px-4 py-8">
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold mb-4">{{ title }}</h1>
+    <time datetime="{{ page.date | dateIso }}" class="text-gray-600">
+      {{ page.date | dateReadable }}
+    </time>
+  </header>
+
+  <div class="prose prose-lg max-w-none">
+    <style>
+      .prose img {
+        @apply mx-auto rounded-lg shadow-lg my-8;
+        max-width: 100%;
+        height: auto;
+      }
+      .prose img + em {
+        @apply block text-center text-gray-600 -mt-6 mb-8;
+      }
+    </style>
+    {{ content | safe }}
+  </div>
+
+  {% if tags %}
+      <div class="tags mt-4 space-x-2">
+      tags: 
+        {%- for tag in tags -%}
+          {%- if tag not in ["all", "nav", "post", "posts"] -%}
+            <a 
+              href="/tags/{{ tag }}/" 
+              class="tag inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 hover:bg-gray-300 transition-colors"
+              aria-label="View posts tagged {{ tag }}"
+            >{{ tag }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
     {% endif %}
 
-    <article>
-      {{ content | safe }}
-    </article>
-  </main>
-</body>
-</html>
+  <nav class="mt-12 border-t pt-6" aria-label="Post navigation">
+    <div class="flex justify-between">
+      {%- set previousPost = collections.posts | getPreviousCollectionItem %}
+      {%- set nextPost = collections.posts | getNextCollectionItem %}
+
+      {% if previousPost %}
+        <a 
+          href="{{ previousPost.url }}" 
+          class="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2" 
+          rel="prev"
+          aria-label="Previous post: {{ previousPost.data.title }}"
+        >
+          <span aria-hidden="true">←</span>
+          <span>{{ previousPost.data.title }}</span>
+        </a>
+      {% else %}
+        <span></span>
+      {% endif %}
+
+      {% if nextPost %}
+        <a 
+          href="{{ nextPost.url }}" 
+          class="text-blue-600 hover:text-blue-800 transition-colors flex items-center gap-2" 
+          rel="next"
+          aria-label="Next post: {{ nextPost.data.title }}"
+        >
+          <span>{{ nextPost.data.title }}</span>
+          <span aria-hidden="true">→</span>
+        </a>
+      {% else %}
+        <span></span>
+      {% endif %}
+    </div>
+  </nav>
+</article>
+
+<section class="comments" aria-labelledby="comments-title">
+  <h2 id="comments-title">Comments</h2>
+  
+  <div id="existing-comments">
+    {% if comments[page.fileSlug] %}
+      {% for comment in comments[page.fileSlug] %}
+        <div class="comment">
+          <p class="comment-meta">
+            <strong>{{ comment.name }}</strong>
+            <time datetime="{{ comment.timestamp }}">
+              {{ comment.timestamp | date("YYYY-MM-DD HH:mm") }}
+            </time>
+          </p>
+          <p class="comment-content">{{ comment.comment }}</p>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No comments yet. Be the first to comment!</p>
+    {% endif %}
+  </div>
+
+  <form id="comment-form" class="comment-form" aria-labelledby="comment-form-title">
+    <h3 id="comment-form-title">Add a Comment</h3>
+    
+    {# Honeypot field #}
+    <div class="hidden" aria-hidden="true">
+      <label for="website">Website</label>
+      <input type="text" id="website" name="website" autocomplete="off" tabindex="-1">
+    </div>
+
+    <div class="form-group">
+      <label for="name">Name *</label>
+      <input 
+        type="text" 
+        id="name" 
+        name="name" 
+        required 
+        maxlength="50"
+        aria-required="true">
+    </div>
+
+    <div class="form-group">
+      <label for="comment">Comment *</label>
+      <textarea 
+        id="comment" 
+        name="comment" 
+        required 
+        maxlength="1000"
+        rows="4"
+        aria-required="true"></textarea>
+    </div>
+
+    <input type="hidden" name="postSlug" value="{{ page.fileSlug }}">
+    
+    <button 
+      type="submit"
+      class="submit-button"
+      aria-label="Submit comment">
+      Submit Comment
+    </button>
+
+    <div id="form-status" role="status" aria-live="polite"></div>
+  </form>
+</section>
+
+<script>
+  const form = document.getElementById('comment-form');
+  const status = document.getElementById('form-status');
+  const comments = document.getElementById('existing-comments');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const formData = new FormData(form);
+    const data = {
+      name: formData.get('name'),
+      comment: formData.get('comment'),
+      postSlug: formData.get('postSlug'),
+      honeypot: formData.get('website')
+    };
+
+    try {
+      status.textContent = 'Submitting...';
+      
+      const response = await fetch('/.netlify/functions/submit-comment', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        status.textContent = 'Comment submitted! It will appear after moderation.';
+        form.reset();
+      } else {
+        status.textContent = result.error || 'Error submitting comment. Please try again.';
+      }
+    } catch (error) {
+      status.textContent = 'Error submitting comment. Please try again.';
+    }
+  });
+</script>

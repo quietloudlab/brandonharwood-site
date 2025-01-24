@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="container-fluid">
+      <ul>
+        <li><a href="/" {% if page.url === '/' %}aria-current="page"{% endif %}>Home</a></li>
+        <li><a href="/blog/" {% if page.url.startsWith('/blog/') %}aria-current="page"{% endif %}>Blog</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container-fluid">
+      <div class="content-narrow">
+        {{ content | safe }}
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container-fluid">
+      <div class="content-narrow">
+        <p>&copy; {{ page.date.getFullYear() }} Brandon Harwood</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html> 

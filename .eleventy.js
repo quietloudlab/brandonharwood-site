@@ -1,5 +1,7 @@
 const { DateTime } = require("luxon");
 const eleventyImage = require("@11ty/eleventy-img");
+const fs = require('fs');
+const path = require('path');
 
 module.exports = function(eleventyConfig) {
   // Custom date filter to ensure UTC handling
@@ -7,13 +9,78 @@ module.exports = function(eleventyConfig) {
     return DateTime.fromJSDate(dateObj).toUTC().toFormat(format);
   });
 
-  // Collection to get all blog posts sorted by date
-  eleventyConfig.addCollection("posts", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/content/posts/**/*.md")
-      .sort((a, b) => new Date(b.date || b.page.date) - new Date(a.date || a.page.date));
+  // Add date filters
+  eleventyConfig.addFilter("dateIso", date => date.toISOString());
+  eleventyConfig.addFilter("dateReadable", date => 
+    DateTime.fromJSDate(date).toLocaleString(DateTime.DATE_FULL)
+  );
+
+  // Add slice filter for limiting arrays
+  eleventyConfig.addFilter("slice", (array, start, end) => {
+    return array.slice(start, end);
   });
 
-  // Add an image shortcode to process and optimize images
+  // Add filter to remove specific tags from tag list
+  eleventyConfig.addFilter("filterTagList", function(tags) {
+    const excludedTags = ["all", "nav", "post", "posts"];
+    return (tags || []).filter(tag => !excludedTags.includes(tag));
+  });
+
+  // Get Previous/Next post filters
+  eleventyConfig.addFilter("getPreviousCollectionItem", (collection) => {
+    return collection.slice(-1)[0] || null;
+  });
+
+  eleventyConfig.addFilter("getNextCollectionItem", (collection) => {
+    return collection[0] || null;
+  });
+
+  // Create tag-based collections
+  eleventyConfig.addCollection("tagList", function(collection) {
+    const excludedTags = ["all", "nav", "post", "posts"];
+    let tagSet = new Set();
+    
+    collection.getAll().forEach(item => {
+      if (!item.data.tags) return;
+      item.data.tags
+        .filter(tag => !excludedTags.includes(tag))
+        .forEach(tag => tagSet.add(tag));
+    });
+    
+    return [...tagSet].sort();
+  });
+
+  // Add a collection for all posts
+  eleventyConfig.addCollection("posts", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("src/content/posts/**/*.md")
+      .sort((a, b) => b.date - a.date);
+  });
+
+  // Add collections for each tag
+  eleventyConfig.addCollection("postsByTag", function(collectionApi) {
+    const posts = collectionApi.getFilteredByGlob("src/content/posts/**/*.md");
+    let tagPosts = {};
+    const excludedTags = ["all", "nav", "post", "posts"];
+    
+    posts.forEach(post => {
+      const tags = (post.data.tags || []).filter(tag => !excludedTags.includes(tag));
+      tags.forEach(tag => {
+        if (!tagPosts[tag]) {
+          tagPosts[tag] = [];
+        }
+        tagPosts[tag].push(post);
+      });
+    });
+
+    // Sort posts within each tag by date
+    for (let tag in tagPosts) {
+      tagPosts[tag].sort((a, b) => b.date - a.date);
+    }
+
+    return tagPosts;
+  });
+
+  // Update the image shortcode to use the new path
   eleventyConfig.addShortcode("image", async function(src, alt, loading, className) {
     let postFolder = this.page.inputPath
       .replace(/^\.\/src\/content\/posts\//, "")
@@ -22,7 +89,8 @@ module.exports = function(eleventyConfig) {
     let metadata = await eleventyImage(`src/content/posts/${postFolder}/${src}`, {
       widths: [300, 600, 1200],
       formats: ["jpeg", "webp"],
-      outputDir: "./_site/img/"
+      outputDir: "./_site/img/",
+      urlPath: "/img/"
     });
 
     let imageAttributes = {
@@ -36,22 +104,60 @@ module.exports = function(eleventyConfig) {
     return eleventyImage.generateHTML(metadata, imageAttributes);
   });
 
-  // Pass through static files and post-specific images
+  // Remove the old passthrough copy for images
   eleventyConfig.addPassthroughCopy("src/static");
   eleventyConfig.addPassthroughCopy("src/styles");
   eleventyConfig.addPassthroughCopy("src/scripts");
-  eleventyConfig.addPassthroughCopy("src/content/posts");
-  eleventyConfig.addPassthroughCopy("src/content/posts/**/img_*.jpg");
+  
+  // Update the image handling to use a more specific path and output structure
+  eleventyConfig.addPassthroughCopy({
+    "src/content/posts/**/": {
+      "*.jpg": "img/",
+      "*.png": "img/",
+      "*.gif": "img/"
+    }
+  });
 
-return {
-  dir: {
-    input: "src",
-    output: "_site",
-    includes: "_includes",
-    layouts: "layouts"
-  },
-  pathPrefix: "/",
-  templateFormats: ["njk", "md"],
-  markdownTemplateEngine: "njk"
-};
+  // Add date filters
+  eleventyConfig.addFilter("readableDate", (dateObj) => {
+    return new Date(dateObj).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  });
+
+  eleventyConfig.addFilter("htmlDateString", (dateObj) => {
+    return new Date(dateObj).toISOString().split('T')[0];
+  });
+
+  // Load comments data
+  eleventyConfig.addGlobalData("comments", () => {
+    const commentsDir = path.join(__dirname, '_data/comments');
+    const comments = {};
+    
+    if (fs.existsSync(commentsDir)) {
+      fs.readdirSync(commentsDir).forEach(file => {
+        if (file.endsWith('.json')) {
+          const slug = file.replace('.json', '');
+          const content = fs.readFileSync(path.join(commentsDir, file), 'utf8');
+          comments[slug] = JSON.parse(content);
+        }
+      });
+    }
+    
+    return comments;
+  });
+
+  return {
+    dir: {
+      input: "src",
+      output: "_site",
+      includes: "_includes",
+      layouts: "layouts"
+    },
+    pathPrefix: "/",
+    templateFormats: ["njk", "md"],
+    markdownTemplateEngine: "njk"
+  };
 };

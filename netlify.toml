@@ -2,3 +2,26 @@
 from = "/*"
 to = "/index.html"
 status = 200
+
+[build]
+  command = "npm run build"
+  publish = "_site"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+# Production context
+[context.production.environment]
+  GITHUB_REPO_OWNER = "quietloudlab"
+  GITHUB_REPO_NAME = "brandonharwood-site"
+
+# Deploy Preview context
+[context.deploy-preview.environment]
+  GITHUB_REPO_OWNER = "quietloudlab"
+  GITHUB_REPO_NAME = "brandonharwood-site"
+
+# Branch Deploy context
+[context.branch-deploy.environment]
+  GITHUB_REPO_OWNER = "quietloudlab"
+  GITHUB_REPO_NAME = "brandonharwood-site"
