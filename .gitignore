@@ -1,0 +1,33 @@
+# Node dependencies
+node_modules/
+package-lock.json
+
+# Build output directory
+_site/
+public/
+
+# Temporary files
+*.log
+*.tmp
+*.cache
+.cache/
+.DS_Store  # macOS system files
+Thumbs.db  # Windows thumbnail cache
+ehthumbs.db
+*.bak
+*.swp
+
+# Netlify and local environment files
+.netlify/
+.env
+.env.local
+
+# VS Code and editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Deployment-related
+dist/
+functions/

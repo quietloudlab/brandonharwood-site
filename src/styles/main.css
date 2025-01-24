@@ -1,0 +1,42 @@
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+h1 {
+  color: #ff6600;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.img-small {
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+}
+
+.img-medium {
+  max-width: 600px;
+  height: auto;
+}
+
+.img-large {
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  text-align: center;
+  margin: 20px 0;
+}
+
+figcaption {
+  font-size: 0.9em;
+  color: #666;
+}
