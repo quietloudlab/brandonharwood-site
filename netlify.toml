@@ -11,6 +11,10 @@ status = 200
 [build.environment]
   NODE_VERSION = "18"
 
+[dev]
+  command = "npm run start"
+  targetPort = 8080
+
 # Production context
 [context.production.environment]
   GITHUB_REPO_OWNER = "quietloudlab"
@@ -23,5 +27,10 @@ status = 200
 
 # Branch Deploy context
 [context.branch-deploy.environment]
+  GITHUB_REPO_OWNER = "quietloudlab"
+  GITHUB_REPO_NAME = "brandonharwood-site"
+
+# Development environment
+[context.dev.environment]
   GITHUB_REPO_OWNER = "quietloudlab"
   GITHUB_REPO_NAME = "brandonharwood-site"

@@ -31,3 +31,6 @@ ehthumbs.db
 # Deployment-related
 dist/
 functions/
+
+# Environment variables
+.env
