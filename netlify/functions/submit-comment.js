@@ -84,6 +84,7 @@ exports.handler = async (event, context) => {
     
     // Try to get existing file
     let existingComments = [];
+    let fileSha;
     try {
       console.log('Fetching existing comments');
       const { data } = await octokit.repos.getContent({
@@ -92,6 +93,7 @@ exports.handler = async (event, context) => {
         path
       });
       
+      fileSha = data.sha;
       const content = Buffer.from(data.content, 'base64').toString();
       existingComments = JSON.parse(content);
       console.log('Found existing comments:', existingComments.length);
@@ -109,6 +111,7 @@ exports.handler = async (event, context) => {
       path,
       message: `Add comment ${commentId}`,
       content: Buffer.from(JSON.stringify(existingComments, null, 2)).toString('base64'),
+      sha: fileSha,
       branch: 'main'
     });
 
