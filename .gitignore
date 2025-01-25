@@ -30,7 +30,7 @@ ehthumbs.db
 
 # Deployment-related
 dist/
-functions/
+/functions/  # Only ignore root functions directory
 
 # Environment variables
 .env
