@@ -73,6 +73,30 @@ layout: base.njk
       {% endif %}
     </div>
   </nav>
+
+  <div class="social-share" aria-label="Share this post">
+    <button 
+      class="share-button"
+      onclick="handleShare('twitter')" 
+      aria-label="Share on Twitter"
+    >
+      Twitter
+    </button>
+    <button 
+      class="share-button"
+      onclick="handleShare('facebook')" 
+      aria-label="Share on Facebook"
+    >
+      Facebook
+    </button>
+    <button 
+      class="share-button"
+      onclick="handleShare('linkedin')" 
+      aria-label="Share on LinkedIn"
+    >
+      LinkedIn
+    </button>
+  </div>
 </article>
 
 <section class="comments" aria-labelledby="comments-title">
