@@ -4,6 +4,11 @@ layout: base.njk
 
 <article class="container mx-auto px-4 py-8">
   <header class="mb-8">
+    {% if image %}
+      <div class="mb-8 -mx-4 sm:-mx-6 md:-mx-8 lg:-mx-12">
+        {% image image, title, "eager", "w-full h-[300px] md:h-[400px] object-cover rounded-lg" %}
+      </div>
+    {% endif %}
     <h1 class="text-4xl font-bold mb-4">{{ title }}</h1>
     <time datetime="{{ page.date | dateIso }}" class="text-gray-600">
       {{ page.date | dateReadable }}
