@@ -2,6 +2,7 @@
 title: "Hello hi how are you"
 layout: "post"
 date: 2025-01-24T00:00:00Z
+image: "img_0497.jpg"
 tags: 
   - dog
 ---
