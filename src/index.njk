@@ -3,22 +3,55 @@ layout: base.njk
 title: Brandon Harwood's Personal Weblog
 ---
 
-<h1>Brandon Harwood is trying something old.</h1>
-
-<p>This is a personal website - separate from my professional one that's way too serious, and separate from social media, because I mean, I'm tired of posting things into spaces that just shove it in front of people's faces. I want something where I can shout into the void and if people want to see it, they can go out of their way to see it.</p>
-
-{% if collections.posts.length > 0 %}
-  <h2>Recent Posts</h2>
-  <ul class="post-list">
-    {% for post in collections.posts | slice(0, 5) %}
-      <li class="post-item">
-        <a href="{{ post.url }}">{{ post.data.title }}</a>
-        <time datetime="{{ post.date | dateIso }}">{{ post.date | dateReadable }}</time>
-      </li>
-    {% endfor %}
-  </ul>
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-4xl font-bold mb-8">Blog Posts</h1>
   
-  {% if collections.posts.length > 5 %}
-    <p><a href="/blog/">View all posts</a></p>
-  {% endif %}
-{% endif %}
+  <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+    {%- for post in collections.posts | reverse -%}
+      <article class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <a href="{{ post.url }}" class="group" aria-label="Read {{ post.data.title }}">
+          {% if post.data.image %}
+            <div class="aspect-w-16 aspect-h-9">
+              {% image post.data.image, post.data.title, "lazy", "w-full h-48 object-cover group-hover:opacity-90 transition-opacity" %}
+            </div>
+          {% endif %}
+          
+          <div class="p-4">
+            <h2 class="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">{{ post.data.title }}</h2>
+            
+            <time datetime="{{ post.date | dateIso }}" class="text-sm text-gray-600 mb-3 block">
+              {{ post.date | dateReadable }}
+            </time>
+            
+            <div class="text-gray-700 mb-4">
+              {# Get first paragraph of content #}
+              {% set firstParagraph = post.templateContent | split("<p>") %}
+              {% if firstParagraph[1] %}
+                {% set preview = firstParagraph[1] | split("</p>") | first | striptags | truncate(150) %}
+                {{ preview }}
+              {% endif %}
+            </div>
+            
+            <span class="text-blue-600 group-hover:text-blue-800 transition-colors">Read more →</span>
+          </div>
+        </a>
+
+        {% if post.data.tags %}
+          <div class="px-4 pb-4 mt-auto">
+            <div class="flex flex-wrap gap-2">
+              {%- for tag in post.data.tags -%}
+                {%- if tag not in ["all", "nav", "post", "posts"] -%}
+                  <a 
+                    href="/tags/{{ tag }}/" 
+                    class="text-xs bg-gray-200 rounded-full px-2 py-1 text-gray-700 hover:bg-gray-300 transition-colors"
+                    aria-label="View posts tagged {{ tag }}"
+                  >{{ tag }}</a>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {% endif %}
+      </article>
+    {%- endfor -%}
+  </div>
+</div>
