@@ -93,9 +93,8 @@ module.exports = function(eleventyConfig) {
     } 
     // If we're in the index page or any other page
     else {
-      // Extract the post slug from the image path
-      const postSlug = src.split('/')[0];
-      imagePath = `src/content/posts/${postSlug}/${src}`;
+      // For index page, the src should already be the full path from content root
+      imagePath = src;
     }
 
     try {
