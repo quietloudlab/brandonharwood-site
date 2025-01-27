@@ -4,6 +4,11 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = function(eleventyConfig) {
+  // Add split filter
+  eleventyConfig.addFilter("split", (string, separator) => {
+    return string.split(separator);
+  });
+
   // Custom date filter to ensure UTC handling
   eleventyConfig.addFilter("date", (dateObj, format) => {
     return DateTime.fromJSDate(dateObj).toUTC().toFormat(format);
