@@ -43,54 +43,56 @@ title: Brandon Harwood's Personal Website
       </div>
       
       <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {%- for post in collections.posts | reverse | limit(3) -%}
-          <article class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-            <a href="{{ post.url }}" class="group" aria-label="Read {{ post.data.title }}">
-              {% if post.data.image %}
-                <div class="aspect-w-16 aspect-h-9">
-                  {% image "src/content/posts/" + post.fileSlug + "/" + post.data.image, 
-                    post.data.title, 
-                    "lazy", 
-                    "w-full h-48 object-cover group-hover:opacity-90 transition-opacity" 
-                  %}
+        {%- for post in collections.posts | reverse -%}
+          {% if loop.index0 < 3 %}
+            <article class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <a href="{{ post.url }}" class="group" aria-label="Read {{ post.data.title }}">
+                {% if post.data.image %}
+                  <div class="aspect-w-16 aspect-h-9">
+                    {% image "src/content/posts/" + post.fileSlug + "/" + post.data.image, 
+                      post.data.title, 
+                      "lazy", 
+                      "w-full h-48 object-cover group-hover:opacity-90 transition-opacity" 
+                    %}
+                  </div>
+                {% endif %}
+                
+                <div class="p-4">
+                  <h3 class="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">{{ post.data.title }}</h3>
+                  
+                  <time datetime="{{ post.date | dateIso }}" class="text-sm text-gray-600 mb-3 block">
+                    {{ post.date | dateReadable }}
+                  </time>
+                  
+                  <div class="text-gray-700 mb-4">
+                    {% set firstParagraph = post.templateContent | split("<p>") %}
+                    {% if firstParagraph[1] %}
+                      {% set preview = firstParagraph[1] | split("</p>") | first | striptags | truncate(150) %}
+                      {{ preview }}
+                    {% endif %}
+                  </div>
+                  
+                  <span class="text-blue-600 group-hover:text-blue-800 transition-colors">Read more →</span>
+                </div>
+              </a>
+
+              {% if post.data.tags %}
+                <div class="px-4 pb-4 mt-auto">
+                  <div class="flex flex-wrap gap-2">
+                    {%- for tag in post.data.tags -%}
+                      {%- if tag not in ["all", "nav", "post", "posts"] -%}
+                        <a 
+                          href="/tags/{{ tag }}/" 
+                          class="text-xs bg-gray-200 rounded-full px-2 py-1 text-gray-700 hover:bg-gray-300 transition-colors"
+                          aria-label="View posts tagged {{ tag }}"
+                        >{{ tag }}</a>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
                 </div>
               {% endif %}
-              
-              <div class="p-4">
-                <h3 class="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">{{ post.data.title }}</h3>
-                
-                <time datetime="{{ post.date | dateIso }}" class="text-sm text-gray-600 mb-3 block">
-                  {{ post.date | dateReadable }}
-                </time>
-                
-                <div class="text-gray-700 mb-4">
-                  {% set firstParagraph = post.templateContent | split("<p>") %}
-                  {% if firstParagraph[1] %}
-                    {% set preview = firstParagraph[1] | split("</p>") | first | striptags | truncate(150) %}
-                    {{ preview }}
-                  {% endif %}
-                </div>
-                
-                <span class="text-blue-600 group-hover:text-blue-800 transition-colors">Read more →</span>
-              </div>
-            </a>
-
-            {% if post.data.tags %}
-              <div class="px-4 pb-4 mt-auto">
-                <div class="flex flex-wrap gap-2">
-                  {%- for tag in post.data.tags -%}
-                    {%- if tag not in ["all", "nav", "post", "posts"] -%}
-                      <a 
-                        href="/tags/{{ tag }}/" 
-                        class="text-xs bg-gray-200 rounded-full px-2 py-1 text-gray-700 hover:bg-gray-300 transition-colors"
-                        aria-label="View posts tagged {{ tag }}"
-                      >{{ tag }}</a>
-                    {%- endif -%}
-                  {%- endfor -%}
-                </div>
-              </div>
-            {% endif %}
-          </article>
+            </article>
+          {% endif %}
         {%- endfor -%}
       </div>
     </div>
