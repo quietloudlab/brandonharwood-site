@@ -80,13 +80,20 @@ module.exports = function(eleventyConfig) {
     return tagPosts;
   });
 
-  // Update the image shortcode to use the new path
+  // Update the image shortcode to handle both post pages and index listing
   eleventyConfig.addShortcode("image", async function(src, alt, loading, className) {
-    let postFolder = this.page.inputPath
-      .replace(/^\.\/src\/content\/posts\//, "")
-      .replace(/\/index\.md$/, "");
+    // If src already includes the full path, use it directly
+    let imagePath = src;
+    
+    // If we're in a post page, construct the path from the current page
+    if (this.page.inputPath.includes('/posts/')) {
+      let postFolder = this.page.inputPath
+        .replace(/^\.\/src\/content\/posts\//, "")
+        .replace(/\/index\.md$/, "");
+      imagePath = `src/content/posts/${postFolder}/${src}`;
+    }
 
-    let metadata = await eleventyImage(`src/content/posts/${postFolder}/${src}`, {
+    let metadata = await eleventyImage(imagePath, {
       widths: [300, 600, 1200],
       formats: ["jpeg", "webp"],
       outputDir: "./_site/img/",

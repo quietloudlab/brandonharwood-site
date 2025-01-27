@@ -12,7 +12,7 @@ title: Brandon Harwood's Personal Weblog
         <a href="{{ post.url }}" class="group" aria-label="Read {{ post.data.title }}">
           {% if post.data.image %}
             <div class="aspect-w-16 aspect-h-9">
-              {% image "src/content/posts/" + post.fileSlug + "/" + post.data.image, 
+              {% image post.data.image, 
                 post.data.title, 
                 "lazy", 
                 "w-full h-48 object-cover group-hover:opacity-90 transition-opacity" 
