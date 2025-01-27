@@ -82,33 +82,43 @@ module.exports = function(eleventyConfig) {
 
   // Update the image shortcode to handle both post pages and index listing
   eleventyConfig.addShortcode("image", async function(src, alt, loading, className) {
-    // If src already includes the full path, use it directly
-    let imagePath = src;
+    let imagePath;
     
-    // If we're in a post page, construct the path from the current page
+    // If we're in a post page
     if (this.page.inputPath.includes('/posts/')) {
       let postFolder = this.page.inputPath
         .replace(/^\.\/src\/content\/posts\//, "")
         .replace(/\/index\.md$/, "");
       imagePath = `src/content/posts/${postFolder}/${src}`;
+    } 
+    // If we're in the index page or any other page
+    else {
+      // Extract the post slug from the image path
+      const postSlug = src.split('/')[0];
+      imagePath = `src/content/posts/${postSlug}/${src}`;
     }
 
-    let metadata = await eleventyImage(imagePath, {
-      widths: [300, 600, 1200],
-      formats: ["jpeg", "webp"],
-      outputDir: "./_site/img/",
-      urlPath: "/img/"
-    });
+    try {
+      let metadata = await eleventyImage(imagePath, {
+        widths: [300, 600, 1200],
+        formats: ["jpeg", "webp"],
+        outputDir: "./_site/img/",
+        urlPath: "/img/"
+      });
 
-    let imageAttributes = {
-      alt,
-      class: className,
-      sizes: "(max-width: 600px) 100vw, 600px",
-      loading,
-      decoding: "async",
-    };
+      let imageAttributes = {
+        alt,
+        class: className,
+        sizes: "(max-width: 600px) 100vw, 600px",
+        loading,
+        decoding: "async",
+      };
 
-    return eleventyImage.generateHTML(metadata, imageAttributes);
+      return eleventyImage.generateHTML(metadata, imageAttributes);
+    } catch (error) {
+      console.error(`Error processing image ${imagePath}:`, error);
+      return `<!-- Error processing image ${imagePath} -->`;
+    }
   });
 
   // Remove the old passthrough copy for images
