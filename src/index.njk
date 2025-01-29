@@ -1,100 +1,97 @@
----
-layout: base.njk
-title: Brandon Harwood's Personal Website
----
+<section class="hero text-center py-8">
+  <h1 class="text-4xl font-bold">this is a website where brandon harwood can make things and break things</h1>
 
-<main class="container mx-auto px-4">
-  {# Hero Section #}
-  <section class="py-16 md:py-24">
-    <div class="max-w-3xl mx-auto text-center">
-      <h1 class="text-5xl md:text-6xl font-bold mb-6">Brandon Harwood</h1>
-      <p class="text-xl md:text-2xl text-gray-600 mb-8">Full-Stack Developer & Design Technologist</p>
-      <div class="flex justify-center gap-4">
-        <a 
-          href="/about" 
-          class="inline-flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-          aria-label="Learn more about Brandon"
-        >
-          About Me
-        </a>
-        <a 
-          href="/contact" 
-          class="inline-flex items-center px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
-          aria-label="Get in touch with Brandon"
-        >
-          Get in Touch
-        </a>
-      </div>
-    </div>
-  </section>
+  <!-- Navigation Menu -->
+  <nav class="menu mt-6">
+    <ul class="flex justify-center space-x-6">
+      <li><a href="#" class="filter-link" data-filter="weblogs">weblogs</a></li>
+      <li><a href="#" class="filter-link" data-filter="built-things">built things</a></li>
+      <li><a href="#" class="filter-link" data-filter="collections">collections</a></li>
+      <li><a href="#" class="filter-link" data-filter="questions">questions</a></li>
+      <li><a href="#" class="filter-link" data-filter="weird-interactions">weird interactions</a></li>
+      <li><a href="#" id="about-link">about</a></li>
+    </ul>
+  </nav>
 
-  {# Recent Blog Posts Section #}
-  <section class="py-16 bg-gray-50">
-    <div class="container mx-auto px-4">
-      <div class="flex justify-between items-center mb-8">
-        <h2 class="text-3xl font-bold">Recent Blog Posts</h2>
-        <a 
-          href="/blog" 
-          class="text-blue-600 hover:text-blue-800 transition-colors"
-          aria-label="View all blog posts"
-        >
-          View all posts →
-        </a>
-      </div>
-      
-      <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {%- for post in collections.posts | reverse -%}
-          {% if loop.index0 < 3 %}
-            <article class="flex flex-col bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-              <a href="{{ post.url }}" class="group" aria-label="Read {{ post.data.title }}">
-                {% if post.data.image %}
-                  <div class="aspect-w-16 aspect-h-9">
-                    {% image "src/content/posts/" + post.fileSlug + "/" + post.data.image, 
-                      post.data.title, 
-                      "lazy", 
-                      "w-full h-48 object-cover group-hover:opacity-90 transition-opacity" 
-                    %}
-                  </div>
-                {% endif %}
-                
-                <div class="p-4">
-                  <h3 class="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">{{ post.data.title }}</h3>
-                  
-                  <time datetime="{{ post.date | dateIso }}" class="text-sm text-gray-600 mb-3 block">
-                    {{ post.date | dateReadable }}
-                  </time>
-                  
-                  <div class="text-gray-700 mb-4">
-                    {% set firstParagraph = post.templateContent | split("<p>") %}
-                    {% if firstParagraph[1] %}
-                      {% set preview = firstParagraph[1] | split("</p>") | first | striptags | truncate(150) %}
-                      {{ preview }}
-                    {% endif %}
-                  </div>
-                  
-                  <span class="text-blue-600 group-hover:text-blue-800 transition-colors">Read more →</span>
-                </div>
-              </a>
+  <!-- Expanding About Section -->
+  <div id="about-section" class="hidden mt-6">
+    <p>
+      it’s a place for weblogs, built things, collections, questions, and weird interactions.<br>
+      it’s also <a href="https://bah.design" class="underline">not my portfolio</a>.  
+      subscribe via <a href="/rss" class="underline">RSS</a> or <a href="/email" class="underline">Email</a>.
+    </p>
+  </div>
 
-              {% if post.data.tags %}
-                <div class="px-4 pb-4 mt-auto">
-                  <div class="flex flex-wrap gap-2">
-                    {%- for tag in post.data.tags -%}
-                      {%- if tag not in ["all", "nav", "post", "posts"] -%}
-                        <a 
-                          href="/tags/{{ tag }}/" 
-                          class="text-xs bg-gray-200 rounded-full px-2 py-1 text-gray-700 hover:bg-gray-300 transition-colors"
-                          aria-label="View posts tagged {{ tag }}"
-                        >{{ tag }}</a>
-                      {%- endif -%}
-                    {%- endfor -%}
-                  </div>
-                </div>
-              {% endif %}
-            </article>
-          {% endif %}
-        {%- endfor -%}
-      </div>
-    </div>
-  </section>
-</main>
+  <!-- Search Input -->
+  <input type="text" id="search-input" placeholder="Search the feed..." 
+         class="border p-2 w-full mt-6 max-w-lg mx-auto block" />
+</section>
+
+<!-- Feed Section -->
+<section id="feed" class="mt-8 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+  {% for post in collections.allPosts %}
+    <article class="post-card" data-type="{{ post.data.type }}" data-tags="{{ post.data.tags | join: ' ' }}">
+  <h2 class="text-2xl font-bold"><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+  
+  {% if post.data.type == 'weblogs' %}
+    <p>{{ post.data.description }}</p>
+    <p class="text-sm text-gray-600">Tags: {{ post.data.tags | join(', ') }}</p>
+  
+  {% elseif post.data.type == 'built-things' %}
+    <p>{{ post.data.description }}</p>
+    <a href="{{ post.data.link }}" target="_blank" class="underline text-blue-600">
+      View Experiment {% if post.data.external %}(External){% endif %}
+    </a>
+
+  {% elseif post.data.type == 'collections' %}
+    <p>{{ post.data.description }}</p>
+    <ul>
+      {% for item in post.data.items %}
+        <li><a href="{{ item.link }}" target="_blank">{{ item.title }}</a> - {{ item.description }}</li>
+      {% endfor %}
+    </ul>
+  
+  {% elseif post.data.type == 'questions' %}
+    <blockquote class="italic">"{{ post.data.description }}"</blockquote>
+    <a href="{{ post.url }}" class="underline text-blue-600">Read Response</a>
+  
+  {% elseif post.data.type == 'weird-interactions' %}
+    <p>{{ post.data.description }}</p>
+    <button class="interaction-button" data-interaction="{{ post.data.interaction }}">Try It</button>
+  {% endif %}
+</article>
+
+  {% endfor %}
+</section>
+
+<script>
+  // Handle "About" Section Toggle
+  document.getElementById('about-link').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('about-section').classList.toggle('hidden');
+  });
+
+  // Filter Posts by Type
+  document.querySelectorAll('.filter-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+      e.preventDefault();
+      const filter = this.dataset.filter;
+      document.querySelectorAll('.post-card').forEach(card => {
+        if (filter === 'all' || card.dataset.type === filter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Simple Client-Side Search
+  document.getElementById('search-input').addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    document.querySelectorAll('.post-card').forEach(card => {
+      const content = card.textContent.toLowerCase();
+      card.style.display = content.includes(query) ? 'block' : 'none';
+    });
+  });
+</script>

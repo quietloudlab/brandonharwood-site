@@ -338,3 +338,39 @@ figcaption {
   padding: 1rem;
   border-radius: 4px;
 }
+
+
+
+
+.hero {
+  background-color: #f9fafb;
+  padding: 2rem;
+}
+
+.menu ul {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.post-card {
+  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  border-radius: 0.375rem;
+  background-color: #ffffff;
+}
+
+.post-card h2 {
+  margin-bottom: 0.5rem;
+}
+
+.interaction-button {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+.interaction-button:hover {
+  background-color: #1d4ed8;
+}
