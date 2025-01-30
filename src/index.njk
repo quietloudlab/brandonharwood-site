@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="styles/main.css">
+
 <section class="hero text-center py-8">
   <h1 class="text-4xl font-bold">this is a website where brandon harwood can make things and break things</h1>
 
@@ -17,7 +19,7 @@
   <div id="about-section" class="hidden mt-6">
     <p>
       it’s a place for weblogs, built things, collections, questions, and weird interactions.<br>
-      it’s also <a href="https://bah.design" class="underline">not my portfolio</a>.  
+      it’s also not <a href="https://bah.design" class="underline">my portfolio</a>.  
       subscribe via <a href="/rss" class="underline">RSS</a> or <a href="/email" class="underline">Email</a>.
     </p>
   </div>
@@ -28,39 +30,12 @@
 </section>
 
 <!-- Feed Section -->
-<section id="feed" class="mt-8 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+<section id="feed">
   {% for post in collections.allPosts %}
-    <article class="post-card" data-type="{{ post.data.type }}" data-tags="{{ post.data.tags | join: ' ' }}">
-  <h2 class="text-2xl font-bold"><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
-  
-  {% if post.data.type == 'weblogs' %}
-    <p>{{ post.data.description }}</p>
-    <p class="text-sm text-gray-600">Tags: {{ post.data.tags | join(', ') }}</p>
-  
-  {% elseif post.data.type == 'built-things' %}
-    <p>{{ post.data.description }}</p>
-    <a href="{{ post.data.link }}" target="_blank" class="underline text-blue-600">
-      View Experiment {% if post.data.external %}(External){% endif %}
-    </a>
-
-  {% elseif post.data.type == 'collections' %}
-    <p>{{ post.data.description }}</p>
-    <ul>
-      {% for item in post.data.items %}
-        <li><a href="{{ item.link }}" target="_blank">{{ item.title }}</a> - {{ item.description }}</li>
-      {% endfor %}
-    </ul>
-  
-  {% elseif post.data.type == 'questions' %}
-    <blockquote class="italic">"{{ post.data.description }}"</blockquote>
-    <a href="{{ post.url }}" class="underline text-blue-600">Read Response</a>
-  
-  {% elseif post.data.type == 'weird-interactions' %}
-    <p>{{ post.data.description }}</p>
-    <button class="interaction-button" data-interaction="{{ post.data.interaction }}">Try It</button>
-  {% endif %}
-</article>
-
+    <article class="post-card" data-type="{{ post.data.type }}" data-tags="{{ post.data.tags | join(' ') }}">
+      <h2 class="text-2xl font-bold"><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+      <p>{{ post.data.description }}</p>
+    </article>
   {% endfor %}
 </section>
 
@@ -71,20 +46,42 @@
     document.getElementById('about-section').classList.toggle('hidden');
   });
 
-  // Filter Posts by Type
-  document.querySelectorAll('.filter-link').forEach(link => {
-    link.addEventListener('click', function(e) {
-      e.preventDefault();
-      const filter = this.dataset.filter;
-      document.querySelectorAll('.post-card').forEach(card => {
-        if (filter === 'all' || card.dataset.type === filter) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
+  // Keep track of active filters
+let activeFilters = new Set();
+
+// Function to apply filters
+function applyFilters() {
+  document.querySelectorAll('.post-card').forEach(card => {
+    const postType = card.dataset.type;
+
+    // Show card if it matches an active filter or if no filters are active
+    if (activeFilters.size === 0 || activeFilters.has(postType)) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
   });
+}
+
+// Handle filter toggling
+document.querySelectorAll('.filter-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+    e.preventDefault();
+    const filter = this.dataset.filter;
+
+    // Toggle filter in the activeFilters set
+    if (activeFilters.has(filter)) {
+      activeFilters.delete(filter); // Remove filter if it's active
+      this.classList.remove('active'); // Optional: highlight active filter
+    } else {
+      activeFilters.add(filter); // Add filter if it’s not active
+      this.classList.add('active'); // Optional: highlight active filter
+    }
+
+    applyFilters(); // Apply the updated filters
+  });
+});
+
 
   // Simple Client-Side Search
   document.getElementById('search-input').addEventListener('input', function() {

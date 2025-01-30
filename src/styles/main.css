@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Reset box-sizing */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -373,4 +377,13 @@ figcaption {
 }
 .interaction-button:hover {
   background-color: #1d4ed8;
+}
+
+.hidden {
+  display: none;
+}
+
+.filter-link.active {
+  font-weight: bold;
+  color: #2563eb; /* Tailwind blue */
 }

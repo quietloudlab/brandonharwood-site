@@ -4,70 +4,46 @@ const fs = require('fs');
 const path = require('path');
 
 module.exports = function(eleventyConfig) {
-  // Add split filter
-  eleventyConfig.addFilter("split", (string, separator) => {
-    return string.split(separator);
-  });
+  // Split filter for strings
+  eleventyConfig.addFilter("split", (string, separator) => string.split(separator));
 
-  // Custom date filter to ensure UTC handling
-  eleventyConfig.addFilter("date", (dateObj, format) => {
-    return DateTime.fromJSDate(dateObj).toUTC().toFormat(format);
-  });
-
-  // Add date filters
+  // Date formatting filters
+  eleventyConfig.addFilter("date", (dateObj, format) => DateTime.fromJSDate(dateObj).toUTC().toFormat(format));
   eleventyConfig.addFilter("dateIso", date => date.toISOString());
-  eleventyConfig.addFilter("dateReadable", date => 
-    DateTime.fromJSDate(date).toLocaleString(DateTime.DATE_FULL)
-  );
+  eleventyConfig.addFilter("dateReadable", date => DateTime.fromJSDate(date).toLocaleString(DateTime.DATE_FULL));
 
-  // Add slice filter for limiting arrays
-  eleventyConfig.addFilter("slice", (array, start, end) => {
-    return array.slice(start, end);
-  });
+  // Limit filter to slice arrays
+  eleventyConfig.addFilter("limit", (arr, limit) => arr.slice(0, limit));
 
-  // Add filter to remove specific tags from tag list
-  eleventyConfig.addFilter("filterTagList", function(tags) {
+  // Filter to exclude specific tags
+  eleventyConfig.addFilter("filterTagList", tags => {
     const excludedTags = ["all", "nav", "post", "posts"];
     return (tags || []).filter(tag => !excludedTags.includes(tag));
   });
 
-  // Get Previous/Next post filters
-  eleventyConfig.addFilter("getPreviousCollectionItem", (collection) => {
-    return collection.slice(-1)[0] || null;
+  // Collection to gather posts from all directories
+  eleventyConfig.addCollection("allPosts", function(collectionApi) {
+    return collectionApi.getFilteredByGlob([
+      "src/content/weblogs/**/*.md",
+      "src/content/built-things/**/*.md",
+      "src/content/collections/**/*.md",
+      "src/content/questions/**/*.md",
+      "src/content/weird-interactions/**/*.md"
+    ]).sort((a, b) => b.date - a.date);  // Sort by most recent date
   });
 
-  eleventyConfig.addFilter("getNextCollectionItem", (collection) => {
-    return collection[0] || null;
-  });
-
-  // Create tag-based collections
-  eleventyConfig.addCollection("tagList", function(collection) {
-    const excludedTags = ["all", "nav", "post", "posts"];
-    let tagSet = new Set();
-    
-    collection.getAll().forEach(item => {
-      if (!item.data.tags) return;
-      item.data.tags
-        .filter(tag => !excludedTags.includes(tag))
-        .forEach(tag => tagSet.add(tag));
-    });
-    
-    return [...tagSet].sort();
-  });
-
-  // Add a collection for all posts
-  eleventyConfig.addCollection("posts", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/content/posts/**/*.md")
-      .sort((a, b) => b.date - a.date);
-  });
-
-  // Add collections for each tag
+  // Collection to group posts by their tags
   eleventyConfig.addCollection("postsByTag", function(collectionApi) {
-    const posts = collectionApi.getFilteredByGlob("src/content/posts/**/*.md");
     let tagPosts = {};
     const excludedTags = ["all", "nav", "post", "posts"];
-    
-    posts.forEach(post => {
+
+    collectionApi.getFilteredByGlob([
+      "src/content/weblogs/**/*.md",
+      "src/content/built-things/**/*.md",
+      "src/content/collections/**/*.md",
+      "src/content/questions/**/*.md",
+      "src/content/weird-interactions/**/*.md"
+    ]).forEach(post => {
       const tags = (post.data.tags || []).filter(tag => !excludedTags.includes(tag));
       tags.forEach(tag => {
         if (!tagPosts[tag]) {
@@ -85,20 +61,14 @@ module.exports = function(eleventyConfig) {
     return tagPosts;
   });
 
-  // Update the image shortcode to handle both post pages and index listing
-  eleventyConfig.addShortcode("image", async function(src, alt, loading, className) {
+  // Add an image shortcode to handle responsive images
+  eleventyConfig.addShortcode("image", async function(src, alt, loading = "lazy", className = "") {
     let imagePath;
     
-    // If we're in a post page
     if (this.page.inputPath.includes('/posts/')) {
-      let postFolder = this.page.inputPath
-        .replace(/^\.\/src\/content\/posts\//, "")
-        .replace(/\/index\.md$/, "");
+      let postFolder = this.page.inputPath.replace(/^\.\/src\/content\/posts\//, "").replace(/\/index\.md$/, "");
       imagePath = `src/content/posts/${postFolder}/${src}`;
-    } 
-    // If we're in the index page or any other page
-    else {
-      // For index page, the src should already be the full path from content root
+    } else {
       imagePath = src;
     }
 
@@ -125,12 +95,10 @@ module.exports = function(eleventyConfig) {
     }
   });
 
-  // Remove the old passthrough copy for images
+  // Copy static assets and styles to the output directory
   eleventyConfig.addPassthroughCopy("src/static");
   eleventyConfig.addPassthroughCopy("src/styles");
   eleventyConfig.addPassthroughCopy("src/scripts");
-  
-  // Update the image handling to use a more specific path and output structure
   eleventyConfig.addPassthroughCopy({
     "src/content/posts/**/": {
       "*.jpg": "img/",
@@ -139,41 +107,15 @@ module.exports = function(eleventyConfig) {
     }
   });
 
-  // Add date filters
-  eleventyConfig.addFilter("readableDate", (dateObj) => {
-    return new Date(dateObj).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  });
+  // Readable date for templates
+  eleventyConfig.addFilter("readableDate", dateObj => new Date(dateObj).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }));
 
-  eleventyConfig.addFilter("htmlDateString", (dateObj) => {
-    return new Date(dateObj).toISOString().split('T')[0];
-  });
-
-  // Load comments data
-  eleventyConfig.addGlobalData("comments", () => {
-    const commentsDir = path.join(__dirname, '_data/comments');
-    const comments = {};
-    
-    if (fs.existsSync(commentsDir)) {
-      fs.readdirSync(commentsDir).forEach(file => {
-        if (file.endsWith('.json')) {
-          const slug = file.replace('.json', '');
-          const content = fs.readFileSync(path.join(commentsDir, file), 'utf8');
-          comments[slug] = JSON.parse(content);
-        }
-      });
-    }
-    
-    return comments;
-  });
-
-  // Add limit filter
-  eleventyConfig.addFilter("limit", function (arr, limit) {
-    return arr.slice(0, limit);
-  });
+  // HTML date string (for <time> elements)
+  eleventyConfig.addFilter("htmlDateString", dateObj => new Date(dateObj).toISOString().split('T')[0]);
 
   return {
     dir: {
