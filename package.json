@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "eleventy --serve",
-    "build": "eleventy",
+    "build": "npm run build:css && eleventy",
+    "build:css": "postcss ./src/styles/main.css -o ./src/static/styles/main.css",
     "deploy": "netlify deploy --prod",
     "test": "echo \"No tests yet!\" && exit 0"
   },
@@ -14,7 +15,7 @@
     "@11ty/eleventy-img": "^3.1.8",
     "@11ty/eleventy-plugin-rss": "^1.2.0",
     "@tailwindcss/typography": "^0.5.16",
-    "autoprefixer": "^10.4.15",
+    "autoprefixer": "^10.4.20",
     "cssnano": "^6.0.1",
     "dotenv": "^16.4.7",
     "luxon": "^3.4.4",
@@ -24,9 +25,10 @@
     "markdown-it-footnote": "^3.0.3",
     "netlify-cli": "^17.38.1",
     "parcel": "^2.10.3",
-    "postcss": "^8.4.33",
+    "postcss": "^8.5.1",
+    "postcss-cli": "^11.0.0",
     "sass": "^1.74.0",
-    "tailwindcss": "^4.0.1"
+    "tailwindcss": "^3.3.2"
   },
   "engines": {
     "node": ">=18.0.0"
