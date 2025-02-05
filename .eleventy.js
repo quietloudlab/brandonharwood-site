@@ -30,8 +30,20 @@ module.exports = function(eleventyConfig) {
     return collectionApi.getFilteredByGlob("src/content/weblogs/*.md");
   });
 
-  eleventyConfig.addCollection("builtThings", function(collectionApi) {
+  eleventyConfig.addCollection("collections", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("src/content/collections/*.md");
+  });
+
+  eleventyConfig.addCollection("madeThings", function(collectionApi) {
     return collectionApi.getFilteredByGlob("src/content/built-things/*.md");
+  });
+
+  eleventyConfig.addCollection("weirdInteractions", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("src/content/weird-interactions/*.md");
+  });
+
+  eleventyConfig.addCollection("questions", function(collectionApi) {
+    return collectionApi.getFilteredByGlob("src/content/questions/*.md");
   });
 
   // Image shortcode with generalized paths
@@ -63,17 +75,9 @@ module.exports = function(eleventyConfig) {
   });
 
   // Passthrough copy for assets
-  eleventyConfig.addPassthroughCopy("src/static");
-  // eleventyConfig.addPassthroughCopy("src/styles");
+  eleventyConfig.addPassthroughCopy("src/images");
   eleventyConfig.addPassthroughCopy("src/static");
   eleventyConfig.addPassthroughCopy("src/scripts");
-  eleventyConfig.addPassthroughCopy({
-    "src/content/**/": {
-      "*.jpg": "img/",
-      "*.png": "img/",
-      "*.gif": "img/"
-    }
-  });
 
   return {
     dir: {

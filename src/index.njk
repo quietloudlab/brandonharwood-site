@@ -21,11 +21,11 @@ title: Home
   <aside class="fixed bg-white/[0.01] backdrop-blur-xl md:static inset-0 transform -translate-x-full md:translate-x-0 transition-transform duration-250 ease-in-out w-full md:w-60 p-8 navigation z-40">
     <h1 class="text-lg sitetitle mt-12 md:mt-0">Brandon Harwood</h1>
     <ul class="mt-4 space-y-4">
-      <li><a href="#" class="filter-link text-blue-600 underline font-semibold" data-filter="weblogs">weblogs</a></li>
-      <li><a href="#" class="filter-link text-blue-600 underline font-semibold" data-filter="collections">collections</a></li>
-      <li><a href="#" class="filter-link text-blue-600 underline font-semibold" data-filter="made-things">made things</a></li>
-      <li><a href="#" class="filter-link text-blue-600 underline font-semibold" data-filter="weird-interactions">weird interactions</a></li>
-      <li><a href="#" class="filter-link text-blue-600 underline font-semibold" data-filter="answering-questions">answering questions</a></li>
+      <li><a href="#" class="filter-link active" data-filter="weblogs">weblogs</a></li>
+      <li><a href="#" class="filter-link active" data-filter="collections">collections</a></li>
+      <li><a href="#" class="filter-link active" data-filter="made-things">made things</a></li>
+      <li><a href="#" class="filter-link active" data-filter="weird-interactions">weird interactions</a></li>
+      <li><a href="#" class="filter-link active" data-filter="answering-questions">answering questions</a></li>
     </ul>
   </aside>
 
@@ -104,10 +104,11 @@ title: Home
 <script>
   const activeFilters = new Set(['weblogs', 'collections', 'made-things', 'weird-interactions', 'answering-questions']);
   const filterLinks = document.querySelectorAll('.filter-link');
+  let isFirstSelection = true;  // Track if this is the first filter selection
 
   // Initialize all filters as active
   filterLinks.forEach(link => {
-    link.classList.add('font-bold');
+    link.classList.add('active');
   });
 
   // Initial display of all cards
@@ -123,22 +124,25 @@ title: Home
         return;
       }
 
-      // If clicking a new filter when others are selected, clear all and select only this one
-      if (!activeFilters.has(filter) && activeFilters.size > 0) {
+      // If this is the first filter selection and we're activating a filter
+      if (isFirstSelection && !activeFilters.has(filter)) {
+        // Clear all other filters
         activeFilters.clear();
-        filterLinks.forEach(link => link.classList.remove('font-bold'));
+        filterLinks.forEach(link => link.classList.remove('active'));
+        // Add only the selected filter
         activeFilters.add(filter);
-        this.classList.add('font-bold');
-      } 
-      // If clicking an active filter, toggle it
-      else if (activeFilters.has(filter)) {
-        activeFilters.delete(filter);
-        this.classList.remove('font-bold');
-      } 
-      // If clicking a new filter with none selected, add it
-      else {
-        activeFilters.add(filter);
-        this.classList.add('font-bold');
+        this.classList.add('active');
+        // Mark that we've made our first selection
+        isFirstSelection = false;
+      } else {
+        // After first selection, just toggle the clicked filter
+        if (activeFilters.has(filter)) {
+          activeFilters.delete(filter);
+          this.classList.remove('active');
+        } else {
+          activeFilters.add(filter);
+          this.classList.add('active');
+        }
       }
 
       updateCardVisibility();
