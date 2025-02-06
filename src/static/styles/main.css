@@ -1331,13 +1331,13 @@ video {
 .border-t {
   border-top-width: 1px;
 }
+.border-\[\#000000\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
+}
 .border-\[\#C0C0C0\] {
   --tw-border-opacity: 1;
   border-color: rgb(192 192 192 / var(--tw-border-opacity));
-}
-.border-\[\#e3e3e3\] {
-  --tw-border-opacity: 1;
-  border-color: rgb(227 227 227 / var(--tw-border-opacity));
 }
 .bg-\[\#001EFF\] {
   --tw-bg-opacity: 1;
@@ -1670,8 +1670,8 @@ a {
 }
 
 .post-card {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .post-card:last-child {
