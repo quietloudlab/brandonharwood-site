@@ -16,7 +16,7 @@ collections:
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Layout", name: "layout", widget: "hidden", default: "post" }  # Automatically assign layout
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Featured Image", name: "image", widget: "image" }
+      - { label: "Featured Image", name: "image", widget: "image", required: false }  # Optional Image
       - { label: "Tags", name: "tags", widget: "list", allow_add: true }
       - { label: "Enable Comments", name: "comments", widget: "boolean", default: true }
       - { label: "Enable Sharing", name: "sharing", widget: "boolean", default: true }
