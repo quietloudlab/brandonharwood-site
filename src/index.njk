@@ -144,7 +144,7 @@ title: Home
 
     <!-- Blog Feed Section -->
     <section id="feed" class="w-full max-w-[75rem] space-y-4">
-      {% for post in collections.allPosts | reverse %}
+      {% for post in collections.allPosts %}
         <article class="post-card flex flex-col md:flex-row gap-4 py-6 border-t border-[#C0C0C0]" data-type="{{ post.data.type }}">
           <!-- Left Column - Type and Date only -->
           <div class="w-full md:max-w-[8.25rem] flex flex-col gap-4">

@@ -60,7 +60,13 @@ module.exports = function(eleventyConfig) {
       "src/content/collections/**/*.md",
       "src/content/questions/**/*.md",
       "src/content/weird-interactions/**/*.md"
-    ]).sort((a, b) => b.date - a.date);
+    ]).sort((a, b) => {
+      // Get dates from the data object where Eleventy stores frontmatter
+      const dateA = a.data.date || a.date;
+      const dateB = b.data.date || b.date;
+      // Convert to timestamps for comparison
+      return dateB.getTime() - dateA.getTime();
+    });
   });
 
   eleventyConfig.addGlobalData("eleventyComputed", {
@@ -84,23 +90,48 @@ module.exports = function(eleventyConfig) {
 
   // Add collections for different content types
   eleventyConfig.addCollection("weblogs", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/content/weblogs/*.md");
+    return collectionApi.getFilteredByGlob("src/content/weblogs/*.md")
+      .sort((a, b) => {
+        const dateA = a.data.date || a.date;
+        const dateB = b.data.date || b.date;
+        return dateB.getTime() - dateA.getTime();
+      });
   });
 
   eleventyConfig.addCollection("collections", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/content/collections/*.md");
+    return collectionApi.getFilteredByGlob("src/content/collections/*.md")
+      .sort((a, b) => {
+        const dateA = a.data.date || a.date;
+        const dateB = b.data.date || b.date;
+        return dateB.getTime() - dateA.getTime();
+      });
   });
 
   eleventyConfig.addCollection("madeThings", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/content/made-things/*.md");
+    return collectionApi.getFilteredByGlob("src/content/made-things/*.md")
+      .sort((a, b) => {
+        const dateA = a.data.date || a.date;
+        const dateB = b.data.date || b.date;
+        return dateB.getTime() - dateA.getTime();
+      });
   });
 
   eleventyConfig.addCollection("weirdInteractions", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/content/weird-interactions/*.md");
+    return collectionApi.getFilteredByGlob("src/content/weird-interactions/*.md")
+      .sort((a, b) => {
+        const dateA = a.data.date || a.date;
+        const dateB = b.data.date || b.date;
+        return dateB.getTime() - dateA.getTime();
+      });
   });
 
   eleventyConfig.addCollection("questions", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/content/questions/*.md");
+    return collectionApi.getFilteredByGlob("src/content/questions/*.md")
+      .sort((a, b) => {
+        const dateA = a.data.date || a.date;
+        const dateB = b.data.date || b.date;
+        return dateB.getTime() - dateA.getTime();
+      });
   });
 
   // Image shortcode with generalized paths
