@@ -2,32 +2,38 @@
 layout: base.njk
 ---
 
-<article class="p-8">
-  <header>
-    <h1 class="text-3xl font-manrope font-semibold">{{ title }}</h1>
-    {% if description %}
-      <p class="mt-2">{{ description }}</p>
-    {% endif %}
+<article class="p-8 md:px-20 pt-16 pb-16 gap-6">
+  <header class="pb-8 border-b border-[#C0C0C0]">
+    <h1 class="text-[28px] font-manrope font-semibold">{{ title }}</h1>
+    <p class="text-black font-baskerville text-base leading-7">{{ description }}</p>
   </header>
 
-  <section class="mt-6">
-    <h2>Collection Items:</h2>
-    <ul class="space-y-4">
-      {% for item in items %}
-        <li>
-          <strong>{{ item.type | capitalize }}:</strong>
-          {% if item.type == "link" %}
-            <a href="{{ item.content }}" target="_blank" class="text-blue-600">{{ item.content }}</a>
-          {% elseif item.type == "image" %}
-            <img src="{{ item.content }}" alt="{{ item.note }}" class="rounded-md" loading="lazy">
-          {% else %}
-            <p>{{ item.content }}</p>
-          {% endif %}
-          {% if item.note %}
-            <p class="text-sm text-gray-500">{{ item.note }}</p>
-          {% endif %}
-        </li>
-      {% endfor %}
-    </ul>
+  <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+    {% for item in items %}
+      <div class="bg-[#f9f9f9] p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+        {% if item.type == "link" %}
+          <!-- Link Preview -->
+          <a href="{{ item.content }}" target="_blank" rel="noopener noreferrer" class="block">
+            <div class="aspect-w-16 aspect-h-9 overflow-hidden rounded-md bg-gray-200">
+              <img src="{{ item.content | getLinkPreview }}" alt="Link preview" class="object-cover w-full h-full" loading="lazy">
+            </div>
+            <p class="mt-2 text-sm font-manrope text-[#001EFF] underline break-words">{{ item.content }}</p>
+          </a>
+
+        {% elseif item.type == "image" %}
+          <!-- Image Display -->
+          <img src="{{ item.content }}" alt="Collection image" class="w-full h-auto rounded-md">
+
+        {% elseif item.type == "snippet" %}
+          <!-- Text Snippet -->
+          <blockquote class="italic text-black font-baskerville text-sm leading-6">
+            {{ item.content }}
+            {% if item.note %}
+              <span class="block mt-2 text-xs text-[#666666]">— {{ item.note }}</span>
+            {% endif %}
+          </blockquote>
+        {% endif %}
+      </div>
+    {% endfor %}
   </section>
 </article>

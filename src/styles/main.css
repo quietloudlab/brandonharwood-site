@@ -188,3 +188,15 @@ text-underline-position: from-font;
     max-width: 8.25rem;
   }
 } 
+
+.aspect-w-16 {
+  aspect-ratio: 16 / 9;
+}
+
+.\!bg-\[\#f9f9f9\] {
+  background-color: #f9f9f9;
+}
+
+.hover\:shadow-lg {
+  transition: all 0.2s ease-in-out;
+}

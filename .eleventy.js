@@ -179,3 +179,20 @@ module.exports = function(eleventyConfig) {
     markdownTemplateEngine: "njk"
   };
 };
+
+
+const axios = require('axios');
+
+module.exports = function(eleventyConfig) {
+  eleventyConfig.addNunjucksFilter("getLinkPreview", async function(url) {
+    try {
+      // Use Microlink API (or replace with another link preview service)
+      const response = await axios.get(`https://api.microlink.io/?url=${url}`);
+      const imageUrl = response.data?.data?.image?.url || 'https://via.placeholder.com/400';  // Fallback image
+      return imageUrl;
+    } catch (error) {
+      console.error(`Error fetching link preview for ${url}:`, error);
+      return 'https://via.placeholder.com/400';  // Fallback image
+    }
+  });
+};

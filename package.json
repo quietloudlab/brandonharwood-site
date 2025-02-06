@@ -39,6 +39,7 @@
   "author": "Brandon Harwood",
   "license": "MIT",
   "dependencies": {
-    "@octokit/rest": "^21.1.0"
+    "@octokit/rest": "^21.1.0",
+    "axios": "^1.7.9"
   }
 }
