@@ -1,5 +1,5 @@
 ---
-title: cool sites
+title: cool design things and thoughts
 description: These sites do or show cool things
 items:
   - type: link
