@@ -1,6 +1,6 @@
 ---
-title: cool design things and thoughts
-description: These sites do or show cool things
+title: cool design things
+description: Designed things and design things
 layout: collection
 items:
   - type: link
