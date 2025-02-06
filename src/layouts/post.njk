@@ -21,7 +21,7 @@ layout: base.njk
           <div class="flex-1">
             <img 
               src="{{ image }}" 
-              alt="{{ image_alt }}"
+              alt="{{ image_alt or 'Featured image' }}"
               class="max-h-[400px] w-auto object-cover rounded-lg"
               loading="eager"
             >
