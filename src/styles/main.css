@@ -27,7 +27,7 @@ h1 {
 .site-header {
   color: #000;
   font-family: Manrope;
-  font-size: clamp(1.5rem, 5vw, 4rem);
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-style: normal;
   font-weight: 600;
   line-height: 1.1;
