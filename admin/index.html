@@ -4,8 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Netlify CMS</title>
+  <!-- Include Netlify Identity Widget -->
+  <script type="text/javascript" src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </head>
 <body>
+  <!-- Add a login/signup menu -->
+  <div data-netlify-identity-menu></div>
+
+  <!-- Add the CMS -->
+  <script>
+    // Initialize Netlify Identity
+    netlifyIdentity.on('init', user => console.log('User initialized:', user));
+    netlifyIdentity.on('login', user => {
+      console.log('User logged in:', user);
+      document.location.href = '/admin/';  // Redirect to CMS after login
+    });
+
+    netlifyIdentity.on('logout', () => {
+      console.log('User logged out');
+      document.location.href = '/';  // Redirect to home after logout
+    });
+
+    // Open widget on page load (optional)
+    netlifyIdentity.init();
+  </script>
+
   <script src="https://unpkg.com/netlify-cms@^2.10.0/dist/netlify-cms.js"></script>
 </body>
 </html>
