@@ -1,6 +1,6 @@
 ---
 title: cool design things
-description: " "
+description: Designed things and design things
 layout: collection
 items:
   - type: link
