@@ -104,26 +104,27 @@ layout: base.njk
   </div>
 </article>
 
-<section class="comments" aria-labelledby="comments-title">
-  <h2 id="comments-title">Comments</h2>
+<section class="comments mt-12 border-t pt-8" aria-labelledby="comments-title">
+  <h2 id="comments-title" class="text-2xl font-bold mb-8">Comments</h2>
   
-  <div id="existing-comments">
+  <div id="existing-comments" class="space-y-6 mb-12">
     {% if comments[page.fileSlug] %}
       {% for comment in comments[page.fileSlug] %}
-        <div class="comment">
-          <p class="comment-meta">
-            <strong>{{ comment.name }}</strong>
+        <div class="comment bg-gray-50 rounded-lg p-6 shadow-sm">
+          <div class="comment-meta flex items-center gap-2 text-sm text-gray-600 mb-2">
+            <strong class="font-medium text-gray-900">{{ comment.name }}</strong>
+            <span aria-hidden="true">•</span>
             <time 
               datetime="{{ comment.timestamp }}"
               class="comment-time"
               data-timestamp="{{ comment.timestamp }}"
             ></time>
-          </p>
-          <p class="comment-content">{{ comment.comment }}</p>
+          </div>
+          <p class="comment-content text-gray-800 whitespace-pre-wrap">{{ comment.comment }}</p>
         </div>
       {% endfor %}
     {% else %}
-      <p>No comments yet. Be the first to comment!</p>
+      <p class="text-gray-600 italic">No comments yet. Be the first to comment!</p>
     {% endif %}
   </div>
 
