@@ -56,7 +56,7 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addCollection("allPosts", function(collectionApi) {
     return collectionApi.getFilteredByGlob([
       "src/content/weblogs/**/*.md",
-      "src/content/built-things/**/*.md",
+      "src/content/made-things/**/*.md",
       "src/content/collections/**/*.md",
       "src/content/questions/**/*.md",
       "src/content/weird-interactions/**/*.md"
@@ -68,7 +68,7 @@ module.exports = function(eleventyConfig) {
       // Assign a type based on the folder path
       if (data.page.inputPath.includes("/weblogs/")) return "weblog";
       if (data.page.inputPath.includes("/collections/")) return "collection";
-      if (data.page.inputPath.includes("/built-things/")) return "made thing";
+      if (data.page.inputPath.includes("/made-things/")) return "made thing";
       if (data.page.inputPath.includes("/weird-interactions/")) return "weird interaction";
       if (data.page.inputPath.includes("/questions/")) return "answered question";
       return "unknown";  // Fallback type
@@ -85,7 +85,7 @@ module.exports = function(eleventyConfig) {
   });
 
   eleventyConfig.addCollection("madeThings", function(collectionApi) {
-    return collectionApi.getFilteredByGlob("src/content/built-things/*.md");
+    return collectionApi.getFilteredByGlob("src/content/made-things/*.md");
   });
 
   eleventyConfig.addCollection("weirdInteractions", function(collectionApi) {
