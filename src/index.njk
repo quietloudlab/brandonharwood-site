@@ -144,7 +144,11 @@ title: Home
               {% if post.data.external %}
                 <a href="{{ post.data.link }}" target="_blank" rel="noopener noreferrer">{{ post.data.title }}</a>
               {% else %}
-                <a href="{{ post.url }}">{{ post.data.title }}</a>
+                <a 
+                  href="{{ post.url }}" 
+                  onclick="saveScrollPosition()"
+                  class="hover:text-[#001EFF] transition-colors"
+                >{{ post.data.title }}</a>
               {% endif %}
             </h2>
 
@@ -359,5 +363,19 @@ title: Home
       updateActiveTagsDisplay();
       updateCardVisibility();
     });
+  });
+
+  // Save scroll position before navigating to a post
+  function saveScrollPosition() {
+    sessionStorage.setItem('scrollPosition', window.scrollY);
+  }
+  
+  // Restore scroll position when returning to the page
+  document.addEventListener('DOMContentLoaded', () => {
+    const scrollPosition = sessionStorage.getItem('scrollPosition');
+    if (scrollPosition) {
+      window.scrollTo(0, parseInt(scrollPosition));
+      sessionStorage.removeItem('scrollPosition');
+    }
   });
 </script>

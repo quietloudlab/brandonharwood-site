@@ -1,7 +1,11 @@
 const { DateTime } = require("luxon");
 const eleventyImage = require("@11ty/eleventy-img");
+const comments = require("./_data/comments/comments.js");
 
 module.exports = function(eleventyConfig) {
+  // Add comments data to global data
+  eleventyConfig.addGlobalData("comments", comments);
+
   // Filters
   eleventyConfig.addFilter("date", (dateObj, format) => DateTime.fromJSDate(dateObj).toUTC().toFormat(format));
   eleventyConfig.addFilter("dateIso", date => date.toISOString());
@@ -13,6 +17,14 @@ module.exports = function(eleventyConfig) {
     const excludedTags = ["all", "nav", "post", "posts"];
     return (tags || []).filter(tag => !excludedTags.includes(tag));
   });
+
+  // Add debug filter
+  eleventyConfig.addFilter("dump", (obj, spaces = 2) => {
+    return JSON.stringify(obj, null, spaces);
+  });
+
+  // Add debug data
+  eleventyConfig.addGlobalData("debug", true);
 
   // Collections
   eleventyConfig.addCollection("allPosts", function(collectionApi) {
