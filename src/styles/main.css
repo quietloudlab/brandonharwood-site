@@ -44,10 +44,13 @@ a {
 .filter-link {
   cursor: pointer;
   position: relative;
-  transition: all 0.2s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   color: #333333;
   text-decoration: none;
   opacity: 0.5;
+  transform: translateZ(0); /* Enable hardware acceleration */
+  backface-visibility: hidden; /* Prevent flickering */
+  will-change: opacity, transform; /* Optimize animations */
 }
 
 .filter-link::after {
@@ -59,22 +62,24 @@ a {
   left: 0;
   background-color: currentColor;
   transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s ease;
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 .filter-link:hover {
   opacity: 0.8;
+  transform: scale(1.02);
 }
 
 .filter-link.active {
   opacity: 1;
   font-weight: 600;
+  transform: scale(1.05);
 }
 
 .filter-link.active::after {
   transform: scaleX(1);
-  transform-origin: left;
 }
 
 .post-card {

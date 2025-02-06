@@ -114,14 +114,14 @@ title: Home
 
     <!-- Blog Feed Section -->
     <section id="feed" class="w-full max-w-[75rem] space-y-4">
-      {% for post in collections.all %}
+      {% for post in collections.all | reverse %}
         <article class="post-card flex flex-col md:flex-row gap-4 py-6 border-t border-[#C0C0C0]" data-type="{{ post.data.type }}">
           <!-- Left Column - Type and Date only -->
           <div class="w-full md:max-w-[10.25rem] flex flex-col gap-4">
             <div class="text-black text-base font-italic font-baskerville italic underline leading-7">
               {{ typeToSingular[post.data.type] or post.data.type }}
             </div>
-            <div class="text-[#333333] text-xs font-baskerville italic">
+            <div class="text-[#000000] text-xs font-baskerville italic">
               {{ post.date | date("MMMM d, yyyy") }}
             </div>
           </div>
@@ -149,7 +149,7 @@ title: Home
             </h2>
 
             <!-- Description -->
-            <div class="prose font-baskerville text-base leading-7">
+            <div class="text-black prose font-baskerville text-base leading-7">
               {{ post.data.description }}
             </div>
 
