@@ -1277,6 +1277,9 @@ video {
 .gap-4 {
   gap: 1rem;
 }
+.gap-5 {
+  gap: 1.25rem;
+}
 .gap-6 {
   gap: 1.5rem;
 }
@@ -1443,9 +1446,6 @@ video {
 .pt-8 {
   padding-top: 2rem;
 }
-.text-left {
-  text-align: left;
-}
 .text-center {
   text-align: center;
 }
@@ -1458,24 +1458,34 @@ video {
 .font-manrope {
   font-family: Manrope, sans-serif;
 }
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
-}
 .text-3xl {
   font-size: 1.875rem;
   line-height: 2.25rem;
 }
+.text-\[0\.75rem\] {
+  font-size: 0.75rem;
+}
+.text-\[0\.875rem\] {
+  font-size: 0.875rem;
+}
+.text-\[1\.25rem\] {
+  font-size: 1.25rem;
+}
+.text-\[1\.5rem\] {
+  font-size: 1.5rem;
+}
+.text-\[1rem\] {
+  font-size: 1rem;
+}
 .text-\[28px\] {
   font-size: 28px;
+}
+.text-\[2rem\] {
+  font-size: 2rem;
 }
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
-}
-.text-lg {
-  font-size: 1.125rem;
-  line-height: 1.75rem;
 }
 .text-sm {
   font-size: 0.875rem;
