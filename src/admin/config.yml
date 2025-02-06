@@ -1,0 +1,18 @@
+backend:
+  name: git-gateway
+  branch: main  # Your branch name (default is main)
+
+media_folder: "src/static/images"
+public_folder: "/static/images"
+
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "src/content/posts"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Featured Image", name: "image", widget: "image" }
