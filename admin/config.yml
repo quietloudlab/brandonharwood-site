@@ -14,6 +14,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Layout", name: "layout", widget: "hidden", default: "post" }  # Automatically assign layout
       - { label: "Body", name: "body", widget: "markdown" }
       - { label: "Featured Image", name: "image", widget: "image" }
       - { label: "Tags", name: "tags", widget: "list", allow_add: true }
@@ -28,7 +29,11 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Items", name: "items", widget: "list", 
+      - { label: "Layout", name: "layout", widget: "hidden", default: "collection" }
+      - { 
+          label: "Items", 
+          name: "items", 
+          widget: "list",
           fields: [
             { label: "Type", name: "type", widget: "select", options: ["link", "image", "snippet"] },
             { label: "Content", name: "content", widget: "string", hint: "URL, image path, or text snippet" },
@@ -44,6 +49,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
+      - { label: "Layout", name: "layout", widget: "hidden", default: "experiment" }
       - { label: "Body", name: "body", widget: "markdown" }
       - { label: "Link to Project", name: "link", widget: "string", hint: "URL to the external or internal project" }
       - { label: "Status", name: "status", widget: "select", options: ["in progress", "completed"], default: "in progress" }
@@ -57,6 +63,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
+      - { label: "Layout", name: "layout", widget: "hidden", default: "interaction" }
       - { label: "Body", name: "body", widget: "markdown" }
       - { label: "Embed Code", name: "embed_code", widget: "code", default_language: "html" }
       - { label: "Widget Mode", name: "widget_mode", widget: "boolean", default: false }
@@ -70,6 +77,7 @@ collections:
     fields:
       - { label: "Question", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
       - { label: "Category", name: "category", widget: "select", options: ["personal", "technical", "creative process", "philosophy"] }
       - { label: "Answer", name: "body", widget: "markdown" }
       - { label: "Related Links", name: "links", widget: "list", field: { label: "Link", name: "link", widget: "string" } }
