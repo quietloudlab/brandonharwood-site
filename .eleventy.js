@@ -163,23 +163,33 @@ module.exports = function(eleventyConfig) {
     }
   });
 
-  // Passthrough copy for assets
-  eleventyConfig.addPassthroughCopy("src/images");
-  eleventyConfig.addPassthroughCopy("src/static");
-  eleventyConfig.addPassthroughCopy("src/scripts");
-  eleventyConfig.addPassthroughCopy("admin");
+// Filters and Passthrough Copies (keep everything else as-is)
+eleventyConfig.addPassthroughCopy("src/images");
+eleventyConfig.addPassthroughCopy("src/static");
+eleventyConfig.addPassthroughCopy("src/scripts");
+eleventyConfig.addPassthroughCopy("admin");
 
-  // Add link preview filter
-  eleventyConfig.addNunjucksFilter("getLinkPreview", async function(url) {
-    try {
-      const response = await axios.get(`https://api.microlink.io/?url=${url}`);
-      const imageUrl = response.data?.data?.image?.url || 'https://via.placeholder.com/400';
-      return imageUrl;
-    } catch (error) {
-      console.error(`Error fetching link preview for ${url}:`, error);
-      return 'https://via.placeholder.com/400';
+// Add async link preview as an `eleventyComputed` property
+eleventyConfig.addGlobalData("eleventyComputed", {
+  linkPreviewImage: async function(data) {
+    if (data?.items) {
+      // Iterate over collection items that are links
+      return await Promise.all(data.items.map(async (item) => {
+        if (item.type === "link") {
+          try {
+            const response = await axios.get(`https://api.microlink.io/?url=${item.content}`);
+            return response.data?.data?.image?.url || 'https://via.placeholder.com/400';
+          } catch (error) {
+            console.error(`Error fetching link preview for ${item.content}:`, error);
+            return 'https://via.placeholder.com/400';  // Fallback image
+          }
+        }
+        return '';  // No preview for non-link items
+      }));
     }
-  });
+    return [];
+  }
+});
 
   return {
     dir: {
