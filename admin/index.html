@@ -14,10 +14,13 @@
   <!-- Add the CMS -->
   <script>
     // Initialize Netlify Identity
-    netlifyIdentity.on('init', user => console.log('User initialized:', user));
+    netlifyIdentity.on('init', user => {
+      console.log('User initialized:', user);
+    });
+
     netlifyIdentity.on('login', user => {
       console.log('User logged in:', user);
-      document.location.href = '/admin/';  // Redirect to CMS after login
+      // No need to redirect manually, let Netlify CMS handle it
     });
 
     netlifyIdentity.on('logout', () => {
@@ -25,7 +28,6 @@
       document.location.href = '/';  // Redirect to home after logout
     });
 
-    // Open widget on page load (optional)
     netlifyIdentity.init();
   </script>
 
