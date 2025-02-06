@@ -64,14 +64,21 @@ module.exports = function(eleventyConfig) {
   });
 
   eleventyConfig.addGlobalData("eleventyComputed", {
+    layout: function (data) {
+      if (data.page.inputPath.includes("/weblogs/")) return "post";
+      if (data.page.inputPath.includes("/collections/")) return "collection";
+      if (data.page.inputPath.includes("/made-things/")) return "experiment";
+      if (data.page.inputPath.includes("/weird-interactions/")) return "interaction";
+      if (data.page.inputPath.includes("/questions/")) return "post";
+      return "base";  // Default layout if not matched
+    },
     type: function (data) {
-      // Assign a type based on the folder path
       if (data.page.inputPath.includes("/weblogs/")) return "weblog";
       if (data.page.inputPath.includes("/collections/")) return "collection";
       if (data.page.inputPath.includes("/made-things/")) return "made thing";
       if (data.page.inputPath.includes("/weird-interactions/")) return "weird interaction";
       if (data.page.inputPath.includes("/questions/")) return "answered question";
-      return "unknown";  // Fallback type
+      return "unknown";
     }
   });
 
