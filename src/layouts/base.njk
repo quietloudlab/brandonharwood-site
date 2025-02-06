@@ -14,5 +14,10 @@
     {{ content | safe }}
 
   </main>
+
+  {% block scripts %}
+    <!-- Any page-specific scripts will be injected here -->
+  {% endblock %}
+
 </body>
 </html>

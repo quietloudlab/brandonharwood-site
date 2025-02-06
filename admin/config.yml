@@ -16,6 +16,9 @@ collections:
       - { label: "Date", name: "date", widget: "datetime" }
       - { label: "Body", name: "body", widget: "markdown" }
       - { label: "Featured Image", name: "image", widget: "image" }
+      - { label: "Tags", name: "tags", widget: "list", allow_add: true }
+      - { label: "Enable Comments", name: "comments", widget: "boolean", default: true }
+      - { label: "Enable Sharing", name: "sharing", widget: "boolean", default: true }
 
   - name: "collections"
     label: "collection"
@@ -25,7 +28,13 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
-      - { label: "Body", name: "body", widget: "markdown" }
+      - { label: "Items", name: "items", widget: "list", 
+          fields: [
+            { label: "Type", name: "type", widget: "select", options: ["link", "image", "snippet"] },
+            { label: "Content", name: "content", widget: "string", hint: "URL, image path, or text snippet" },
+            { label: "Note", name: "note", widget: "text", required: false }
+          ]
+        }
 
   - name: "made-things"
     label: "made thing"
@@ -36,7 +45,9 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Link", name: "link", widget: "string" }
+      - { label: "Link to Project", name: "link", widget: "string", hint: "URL to the external or internal project" }
+      - { label: "Status", name: "status", widget: "select", options: ["in progress", "completed"], default: "in progress" }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
 
   - name: "weird-interactions"
     label: "weird interaction"
@@ -47,15 +58,18 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Description", name: "description", widget: "text" }
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Code Embed", name: "embed_code", widget: "code", default_language: "html" }
+      - { label: "Embed Code", name: "embed_code", widget: "code", default_language: "html" }
+      - { label: "Widget Mode", name: "widget_mode", widget: "boolean", default: false }
+      - { label: "Code Language", name: "code_language", widget: "select", options: ["HTML", "CSS", "JavaScript", "Processing", "WebGL"] }
 
   - name: "questions"
     label: "answered question"
-    folder: "src/content/answered-questions"
+    folder: "src/content/questions"
     create: true
     slug: "{{slug}}"
     fields:
       - { label: "Question", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
+      - { label: "Category", name: "category", widget: "select", options: ["personal", "technical", "creative process", "philosophy"] }
       - { label: "Answer", name: "body", widget: "markdown" }
       - { label: "Related Links", name: "links", widget: "list", field: { label: "Link", name: "link", widget: "string" } }

@@ -1,0 +1,33 @@
+---
+layout: base.njk
+---
+
+<article class="p-8">
+  <header>
+    <h1 class="text-3xl font-manrope font-semibold">{{ title }}</h1>
+    {% if description %}
+      <p class="mt-2">{{ description }}</p>
+    {% endif %}
+  </header>
+
+  <section class="mt-6">
+    <h2>Collection Items:</h2>
+    <ul class="space-y-4">
+      {% for item in items %}
+        <li>
+          <strong>{{ item.type | capitalize }}:</strong>
+          {% if item.type == "link" %}
+            <a href="{{ item.content }}" target="_blank" class="text-blue-600">{{ item.content }}</a>
+          {% elseif item.type == "image" %}
+            <img src="{{ item.content }}" alt="{{ item.note }}" class="rounded-md" loading="lazy">
+          {% else %}
+            <p>{{ item.content }}</p>
+          {% endif %}
+          {% if item.note %}
+            <p class="text-sm text-gray-500">{{ item.note }}</p>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+</article>

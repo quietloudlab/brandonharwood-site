@@ -2,12 +2,42 @@
 layout: base.njk
 ---
 
-<article>
-  <h1>{{ title }}</h1>
-  <p><strong>Date:</strong> {{ date | dateReadable }}</p>
-  <p>{{ description }}</p>
+<article class="p-8">
+  <header>
+    <h1 class="text-3xl font-manrope font-semibold">{{ title }}</h1>
+    <p class="text-sm text-gray-500"><strong>Date:</strong> {{ date | dateReadable }}</p>
+    {% if description %}
+      <p class="mt-2">{{ description }}</p>
+    {% endif %}
+  </header>
 
-  <div>
-    <p>This is an experiment page layout. Customize this as needed!</p>
-  </div>
+  <!-- Main Content -->
+  <section class="mt-6">
+    <div class="prose max-w-none">
+      {{ content | safe }}
+    </div>
+  </section>
+
+  <!-- Embed/Widget Mode for Weird Interactions -->
+  {% if widget_mode %}
+    <section class="mt-8">
+      <h2>Interactive Widget:</h2>
+      <div class="border rounded-md p-4 bg-gray-50">
+        {{ embed_code | safe }}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- Made Things - Project Links and Status -->
+  {% if link or status %}
+    <section class="mt-8">
+      <h2>Project Details:</h2>
+      {% if link %}
+        <p><strong>Project Link:</strong> <a href="{{ link }}" target="_blank" class="text-blue-600">{{ link }}</a></p>
+      {% endif %}
+      {% if status %}
+        <p><strong>Status:</strong> {{ status }}</p>
+      {% endif %}
+    </section>
+  {% endif %}
 </article>
