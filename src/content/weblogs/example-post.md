@@ -3,11 +3,10 @@ title: "Hello hi how are you"
 layout: "post"
 date: 2025-01-24T00:00:00Z
 type: "weblog"
-description: "A quick post about my dog Mabel and the Dallas snow."
 tags: 
   - dog
   - weblogs
-image: "/images/mabel-snow.jpg"
+image: "/static/images/mabel-snow.jpg"
 image_alt: "Mabel the dog with snow on her nose"
 ---
 

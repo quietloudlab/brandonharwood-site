@@ -26,6 +26,32 @@ module.exports = function(eleventyConfig) {
   // Add debug data
   eleventyConfig.addGlobalData("debug", true);
 
+  eleventyConfig.addFilter("getExcerpt", function(post) {
+    if (!post || !post.data) {
+      return "";
+    }
+
+    // First try to get the content from data.page.excerpt if it exists
+    if (post.data.page && post.data.page.excerpt) {
+      return post.data.page.excerpt;
+    }
+
+    // Otherwise try to get raw content
+    const content = post.template?.rawContent || '';
+    
+    // Clean up the content
+    const plainText = content
+      .replace(/^---[\s\S]*?---/, '') // Remove frontmatter
+      .replace(/<[^>]*>/g, '')        // Remove HTML tags
+      .replace(/\n/g, ' ')            // Replace newlines with spaces
+      .replace(/\s+/g, ' ')           // Normalize spaces
+      .trim();
+    
+    // Get first 150 words
+    const words = plainText.split(/\s+/).slice(0, 150);
+    return words.join(' ') + (words.length >= 150 ? '...' : '');
+  });
+
   // Collections
   eleventyConfig.addCollection("allPosts", function(collectionApi) {
     return collectionApi.getFilteredByGlob([

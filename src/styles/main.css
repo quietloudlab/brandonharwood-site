@@ -101,6 +101,7 @@ a {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  max-width: 10rem;
 }
 
 .backdrop-blur-xl {
@@ -168,7 +169,7 @@ text-underline-position: from-font;
 }
 
 @media (min-width: 768px) {
-  .md\:max-w-\[10\.25rem\] {
-    max-width: 10.25rem;
+  .md\:max-w-\[8\.25rem\] {
+    max-width: 8.25rem;
   }
 } 

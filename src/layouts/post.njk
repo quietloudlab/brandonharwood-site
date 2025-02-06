@@ -73,60 +73,6 @@ layout: base.njk
           {{ content | safe }}
         </div>
 
-        <!-- Tags and Social -->
-        <div class="flex justify-between items-center mt-8 pt-6 border-t border-[#C0C0C0]">
-          <div class="flex-1">
-            {% if tags %}
-              <span class="text-[#333333] text-xs font-manrope font-medium leading-7">Tags:</span>
-              {% for tag in tags %}
-                {% if tag not in ["all", "nav", "post", "posts"] %}
-                  <a href="/tags/{{ tag }}/" 
-                    class="text-[#333333] text-xs font-baskerville underline leading-7"
-                    aria-label="View posts tagged {{ tag }}"
-                  >{{ tag }}</a>{% if not loop.last %}, {% endif %}
-                {% endif %}
-              {% endfor %}
-            {% endif %}
-          </div>
-          
-          <!-- Social Icons -->
-          <div class="flex gap-4">
-            <button 
-              class="w-6 h-6 bg-[#333333] mask-twitter" 
-              onclick="handleShare('twitter')" 
-              aria-label="Share on Twitter"
-            ></button>
-            <button 
-              class="w-6 h-6 bg-[#333333] mask-facebook"
-              onclick="handleShare('facebook')" 
-              aria-label="Share on Facebook"
-            ></button>
-            <button 
-              class="w-6 h-6 bg-[#333333] mask-linkedin"
-              onclick="handleShare('linkedin')" 
-              aria-label="Share on LinkedIn"
-            ></button>
-          </div>
-        </div>
-
-        <!-- Post Navigation -->
-        <nav class="flex justify-between mt-8 pt-6 border-t border-[#C0C0C0]" aria-label="Post navigation">
-          {%- set previousPost = collections.posts | getPreviousCollectionItem %}
-          {%- set nextPost = collections.posts | getNextCollectionItem %}
-
-          <div class="flex-1">
-            {% if previousPost %}
-              <a href="{{ previousPost.url }}" 
-                class="flex items-center gap-2 text-[#001EFF] hover:underline font-baskerville" 
-                rel="prev"
-                aria-label="Previous post: {{ previousPost.data.title }}"
-              >
-                <span aria-hidden="true">←</span>
-                <span>{{ previousPost.data.title }}</span>
-              </a>
-            {% endif %}
-          </div>
-
           <div class="flex-1 text-right">
             {% if nextPost %}
               <a href="{{ nextPost.url }}" 
@@ -229,6 +175,42 @@ layout: base.njk
             ></div>
           </form>
         </section>
+
+        <!-- Tags and Social -->
+        <div class="flex justify-between items-center mt-8 pt-6 border-t border-[#C0C0C0]">
+          <div class="flex-1">
+            {% if tags %}
+              <span class="text-[#333333] text-xs font-manrope font-medium leading-7">Tags:</span>
+              {% for tag in tags %}
+                {% if tag not in ["all", "nav", "post", "posts"] %}
+                  <a href="/tags/{{ tag }}/" 
+                    class="text-[#333333] text-xs font-baskerville underline leading-7"
+                    aria-label="View posts tagged {{ tag }}"
+                  >{{ tag }}</a>{% if not loop.last %}, {% endif %}
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+          
+          <!-- Social Icons -->
+          <div class="flex gap-4">
+            <button 
+              class="w-6 h-6 bg-[#333333] mask-twitter" 
+              onclick="handleShare('twitter')" 
+              aria-label="Share on Twitter"
+            ></button>
+            <button 
+              class="w-6 h-6 bg-[#333333] mask-facebook"
+              onclick="handleShare('facebook')" 
+              aria-label="Share on Facebook"
+            ></button>
+            <button 
+              class="w-6 h-6 bg-[#333333] mask-linkedin"
+              onclick="handleShare('linkedin')" 
+              aria-label="Share on LinkedIn"
+            ></button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
