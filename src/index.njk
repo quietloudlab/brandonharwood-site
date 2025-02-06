@@ -18,21 +18,51 @@ title: Home
   </button>
 
   <!-- Sidebar (Filters) -->
-  <aside class="fixed bg-white/[0.01] backdrop-blur-xl md:sticky md:top-0 inset-0 transform -translate-x-full md:translate-x-0 transition-transform duration-250 ease-in-out w-screen md:w-60 p-4 navigation z-40 md:h-screen">
-    <h1 class="text-lg sitetitle mt-12 md:mt-0">Brandon Harwood</h1>
-    <ul class="mt-4 space-y-4">
-      <li><a href="#" class="filter-link active" data-filter="weblog">weblogs</a></li>
-      <li><a href="#" class="filter-link active" data-filter="collection">collections</a></li>
-      <li><a href="#" class="filter-link active" data-filter="made thing">made things</a></li>
-      <li><a href="#" class="filter-link active" data-filter="weird interaction">weird interactions</a></li>
-      <li><a href="#" class="filter-link active" data-filter="answered question">answering questions</a></li>
-    </ul>
+  <aside class="fixed bg-white/[0.01] backdrop-blur-xl md:sticky md:top-0 inset-0 transform -translate-x-full md:translate-x-0 transition-transform duration-250 ease-in-out w-screen md:w-60 p-4 navigation z-40 h-screen flex flex-col">
+    <div class="flex flex-col flex-1 min-h-0">
+      <h1 class="text-lg sitetitle mt-12 md:mt-0">brandon harwood</h1>
+      <ul class="mt-4 space-y-4 flex-none">
+        <li><a href="#" class="filter-link active" data-filter="weblog">weblogs</a></li>
+        <li><a href="#" class="filter-link active" data-filter="collection">collections</a></li>
+        <li><a href="#" class="filter-link active" data-filter="made thing">made things</a></li>
+        <li><a href="#" class="filter-link active" data-filter="weird interaction">weird interactions</a></li>
+        <li><a href="#" class="filter-link active" data-filter="answered question">answered questions</a></li>
+      </ul>
 
-    <!-- Active tag filters section -->
-    <div id="activeTagsSection" class="hidden mt-8">
-      <h2 class="text-sm font-manrope mb-2">Active Tags:</h2>
-      <div id="activeTags" class="flex flex-wrap gap-2">
-        <!-- Active tags will be inserted here -->
+      <!-- Active tag filters section -->
+      <div id="activeTagsSection" class="hidden mt-8 flex-none">
+        <h2 class="text-sm font-manrope mb-2">Active Tags:</h2>
+        <div id="activeTags" class="flex flex-wrap gap-2">
+          <!-- Active tags will be inserted here -->
+        </div>
+      </div>
+
+      <!-- Spacer -->
+      <div class="flex-grow"></div>
+
+      <!-- Navigation Links -->
+      <div class="flex-none mt-4">
+        <div class="h-px mb-4"></div>
+        <ul class="space-y-2">
+          <li>
+            <a 
+              href="/about" 
+              class="text-sm font-manrope hover:text-[#001EFF] transition-colors"
+              tabindex="0"
+            >
+              about brandon
+            </a>
+          </li>
+          <li>
+            <a 
+              href="/contact" 
+              class="text-sm font-manrope hover:text-[#001EFF] transition-colors"
+              tabindex="0"
+            >
+              contact
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
   </aside>
@@ -204,15 +234,14 @@ title: Home
     'answered question': 'answered question'
   };
 
-  // Update the initial active filters to match the content types
+  // Update these variables
   const activeFilters = new Set(['weblog', 'collection', 'made thing', 'weird interaction', 'answered question']);
   const activeTags = new Set();
-  
   const filterLinks = document.querySelectorAll('.filter-link');
   const tagLinks = document.querySelectorAll('.tag-filter');
   const activeTagsSection = document.getElementById('activeTagsSection');
   const activeTagsContainer = document.getElementById('activeTags');
-  let isFirstSelection = true;  // Track if this is the first filter selection
+  let hasInteracted = false;  // Add this to track first interaction
 
   // Initialize all filters as active
   filterLinks.forEach(link => {
@@ -227,26 +256,21 @@ title: Home
       e.preventDefault();
       const filter = this.dataset.filter;
       
-      // If clicking an active filter when it's the only one selected, do nothing
-      if (activeFilters.size === 1 && activeFilters.has(filter)) {
-        return;
-      }
-
-      // If this is the first filter selection and we're activating a filter
-      if (isFirstSelection && !activeFilters.has(filter)) {
-        // Clear all other filters
+      if (!hasInteracted) {
+        // First interaction - clear all filters except the clicked one
         activeFilters.clear();
         filterLinks.forEach(link => link.classList.remove('active'));
-        // Add only the selected filter
         activeFilters.add(filter);
         this.classList.add('active');
-        // Mark that we've made our first selection
-        isFirstSelection = false;
+        hasInteracted = true;
       } else {
-        // After first selection, just toggle the clicked filter
+        // Normal toggle behavior
         if (activeFilters.has(filter)) {
-          activeFilters.delete(filter);
-          this.classList.remove('active');
+          // Don't allow deselecting if it's the last active filter
+          if (activeFilters.size > 1) {
+            activeFilters.delete(filter);
+            this.classList.remove('active');
+          }
         } else {
           activeFilters.add(filter);
           this.classList.add('active');
