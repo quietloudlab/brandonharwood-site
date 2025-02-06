@@ -1,6 +1,7 @@
 const { DateTime } = require("luxon");
 const eleventyImage = require("@11ty/eleventy-img");
 const comments = require("./_data/comments/comments.js");
+const axios = require('axios');
 
 module.exports = function(eleventyConfig) {
   // Add comments data to global data
@@ -168,31 +169,26 @@ module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/scripts");
   eleventyConfig.addPassthroughCopy("admin");
 
+  // Add link preview filter
+  eleventyConfig.addNunjucksFilter("getLinkPreview", async function(url) {
+    try {
+      const response = await axios.get(`https://api.microlink.io/?url=${url}`);
+      const imageUrl = response.data?.data?.image?.url || 'https://via.placeholder.com/400';
+      return imageUrl;
+    } catch (error) {
+      console.error(`Error fetching link preview for ${url}:`, error);
+      return 'https://via.placeholder.com/400';
+    }
+  });
+
   return {
     dir: {
       input: "src",
       output: "_site",
-      includes: "_includes",
+      includes: "layouts",
       layouts: "layouts"
     },
     templateFormats: ["njk", "md"],
     markdownTemplateEngine: "njk"
   };
-};
-
-
-const axios = require('axios');
-
-module.exports = function(eleventyConfig) {
-  eleventyConfig.addNunjucksFilter("getLinkPreview", async function(url) {
-    try {
-      // Use Microlink API (or replace with another link preview service)
-      const response = await axios.get(`https://api.microlink.io/?url=${url}`);
-      const imageUrl = response.data?.data?.image?.url || 'https://via.placeholder.com/400';  // Fallback image
-      return imageUrl;
-    } catch (error) {
-      console.error(`Error fetching link preview for ${url}:`, error);
-      return 'https://via.placeholder.com/400';  // Fallback image
-    }
-  });
 };
