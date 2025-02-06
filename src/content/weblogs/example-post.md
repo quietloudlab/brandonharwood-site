@@ -12,4 +12,10 @@ image_alt: "Mabel the dog with snow on her nose"
 
 Lorem ipsum this is a test post.
 
-Anyway, here's a picture of my dog Mabel with the entirety of the snow that hit Dallas last week on her nose.
+Anyway, here's a picture of my dog Mabel with the entirety of the snow that hit Dallas last week on her nose:
+
+![Mabel playing in the snow](/static/images/mabel-playing.jpg)
+
+Or more snow pictures:
+
+<img src="/static/images/particles.png" alt="More Mabel snow adventures" />

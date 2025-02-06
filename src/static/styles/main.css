@@ -1174,11 +1174,17 @@ video {
 .h-full {
   height: 100%;
 }
+.max-h-\[400px\] {
+  max-height: 400px;
+}
 .min-h-screen {
   min-height: 100vh;
 }
 .w-6 {
   width: 1.5rem;
+}
+.w-auto {
+  width: auto;
 }
 .w-full {
   width: 100%;

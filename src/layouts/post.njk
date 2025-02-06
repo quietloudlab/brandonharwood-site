@@ -3,37 +3,50 @@ layout: base.njk
 ---
 
 <article class="flex flex-col items-center p-8 md:px-20 pt-16 pb-16 gap-6">
-  <!-- Back Button -->
-  <div class="w-full max-w-[75rem]">
-    <button 
-      onclick="handleBack()"
-      class="flex items-center gap-2 text-[#333333] hover:text-[#001EFF] font-baskerville text-base transition-colors"
-      aria-label="Go back to previous page"
-    >
-      <span aria-hidden="true">←</span>
-      <span>back</span>
-    </button>
-  </div>
-
   <div class="w-full max-w-[75rem]">
     <!-- Post Header -->
-    <header class="flex flex-col md:flex-row gap-4 pb-6 border-b border-[#C0C0C0]">
-      <!-- Left Column - Type and Date -->
-      <div class="w-full md:max-w-[10.25rem] flex flex-col gap-4">
-        <div class="text-black text-base font-italic font-baskerville italic underline leading-7">
-          {{ type }}
+    <header class="flex flex-col gap-4 pb-6 border-b border-[#C0C0C0]">
+      {% if image %}
+        <div class="flex flex-col md:flex-row gap-4 mb-8">
+          <div class="w-full md:max-w-[10.25rem]">
+            <button 
+              onclick="handleBack()"
+              class="flex items-center gap-2 text-[#333333] hover:text-[#001EFF] font-baskerville text-base transition-colors"
+              aria-label="Go back to previous page"
+            >
+              <span aria-hidden="true">←</span>
+              <span>back</span>
+            </button>
+          </div>
+          <div class="flex-1">
+            <img 
+              src="{{ image }}" 
+              alt="{{ image_alt }}"
+              class="max-h-[400px] w-auto object-cover rounded-lg"
+              loading="eager"
+            >
+          </div>
         </div>
-        <div class="text-[#000000] text-xs font-baskerville italic">
-          {{ page.date | dateReadable }}
-        </div>
-      </div>
+      {% endif %}
 
-      <!-- Right Column - Title -->
-      <div class="flex-1">
-        <h1 class="text-black text-[28px] font-manrope font-semibold mb-4">{{ title }}</h1>
-        {% if description %}
-          <p class="text-black font-baskerville text-base leading-7">{{ description }}</p>
-        {% endif %}
+      <div class="flex flex-col md:flex-row gap-4">
+        <!-- Left Column - Type and Date -->
+        <div class="w-full md:max-w-[10.25rem] flex flex-col gap-4">
+          <div class="text-black text-base font-italic font-baskerville italic underline leading-7">
+            {{ type }}
+          </div>
+          <div class="text-[#000000] text-xs font-baskerville italic">
+            {{ page.date | dateReadable }}
+          </div>
+        </div>
+
+        <!-- Right Column - Title -->
+        <div class="flex-1">
+          <h1 class="text-black text-[28px] font-manrope font-semibold mb-4">{{ title }}</h1>
+          {% if description %}
+            <p class="text-black font-baskerville text-base leading-7">{{ description }}</p>
+          {% endif %}
+        </div>
       </div>
     </header>
 
@@ -44,12 +57,6 @@ layout: base.njk
 
       <!-- Right Column - Content -->
       <div class="flex-1">
-        {% if image %}
-          <div class="mb-8 w-full">
-            {% image image, title, "eager", "w-full h-[400px] object-cover rounded-lg" %}
-          </div>
-        {% endif %}
-
         <div class="prose prose-lg max-w-none font-baskerville">
           <style>
             .prose img {
