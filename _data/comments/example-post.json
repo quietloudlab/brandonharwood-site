@@ -1,0 +1,16 @@
+[
+  {
+    "id": "ee04480d285463d1ee48fe30681afe5a",
+    "name": "dog",
+    "comment": "Hello I am a dog",
+    "timestamp": "2025-02-06T02:11:49.452Z",
+    "postSlug": "example-post"
+  },
+  {
+    "id": "fae8c1e6e0cb2315697d735f3baab962",
+    "name": "dog",
+    "comment": "Hello I am a dog",
+    "timestamp": "2025-02-06T02:34:05.916Z",
+    "postSlug": "example-post"
+  }
+]
