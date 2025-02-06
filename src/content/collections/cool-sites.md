@@ -1,6 +1,7 @@
 ---
 title: cool design things and thoughts
 description: These sites do or show cool things
+layout: collection
 items:
   - type: link
     content: https://slownet.work/
