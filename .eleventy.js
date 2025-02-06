@@ -86,6 +86,23 @@ module.exports = function(eleventyConfig) {
       if (data.page.inputPath.includes("/weird-interactions/")) return "weird interaction";
       if (data.page.inputPath.includes("/questions/")) return "answered question";
       return "unknown";
+    },
+    linkPreviewImage: async function(data) {
+      if (data?.items) {
+        return await Promise.all(data.items.map(async (item) => {
+          if (item.type === "link") {
+            try {
+              const response = await axios.get(`https://api.microlink.io/?url=${item.content}`);
+              return response.data?.data?.image?.url || 'https://via.placeholder.com/400';
+            } catch (error) {
+              console.error(`Error fetching link preview for ${item.content}:`, error);
+              return 'https://via.placeholder.com/400';
+            }
+          }
+          return '';
+        }));
+      }
+      return [];
     }
   });
 
@@ -168,28 +185,6 @@ eleventyConfig.addPassthroughCopy("src/images");
 eleventyConfig.addPassthroughCopy("src/static");
 eleventyConfig.addPassthroughCopy("src/scripts");
 eleventyConfig.addPassthroughCopy("admin");
-
-// Add async link preview as an `eleventyComputed` property
-eleventyConfig.addGlobalData("eleventyComputed", {
-  linkPreviewImage: async function(data) {
-    if (data?.items) {
-      // Iterate over collection items that are links
-      return await Promise.all(data.items.map(async (item) => {
-        if (item.type === "link") {
-          try {
-            const response = await axios.get(`https://api.microlink.io/?url=${item.content}`);
-            return response.data?.data?.image?.url || 'https://via.placeholder.com/400';
-          } catch (error) {
-            console.error(`Error fetching link preview for ${item.content}:`, error);
-            return 'https://via.placeholder.com/400';  // Fallback image
-          }
-        }
-        return '';  // No preview for non-link items
-      }));
-    }
-    return [];
-  }
-});
 
   return {
     dir: {
