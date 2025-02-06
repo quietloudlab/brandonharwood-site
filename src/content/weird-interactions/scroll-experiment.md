@@ -2,7 +2,7 @@
 title: "Unusual Scroll Behavior"
 layout: "experiment"
 date: 2024-03-23
-type: "weird-interactions"
+type: "weird interaction"
 description: "An experimental scroll interaction that challenges traditional web navigation patterns."
 tags: 
   - interaction

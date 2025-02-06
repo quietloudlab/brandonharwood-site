@@ -2,7 +2,7 @@
 title: "Hello hi how are you"
 layout: "post"
 date: 2025-01-24T00:00:00Z
-type: "weblogs"
+type: "weblog"
 description: "A quick post about my dog Mabel and the Dallas snow."
 tags: 
   - dog

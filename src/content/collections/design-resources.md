@@ -2,7 +2,7 @@
 title: "Curated Design Resources"
 layout: "post"
 date: 2024-03-21
-type: "collections"
+type: "collection"
 description: "A carefully curated collection of design resources, tools, and inspiration for creative professionals."
 tags: 
   - design

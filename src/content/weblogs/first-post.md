@@ -2,7 +2,7 @@
 title: "First Blog Post"
 layout: "post"
 date: 2024-03-20
-type: "weblogs"
+type: "weblog"
 description: "This is my first blog post about my journey in web development and design."
 tags: 
   - webdev

@@ -33,7 +33,9 @@ h1 {
   line-height: 1.1;
   max-width: 75rem;
   margin: 0 auto;
+  padding-bottom: 4rem;
 }
+
 
 a {
   text-decoration: none;
@@ -77,12 +79,12 @@ a {
 
 .post-card {
   transition: box-shadow 0.2s ease;
+  margin-bottom: 4rem;
 }
 
-.post-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.post-card:last-child {
+  margin-bottom: 0;
 }
-
 
 .navigation {
   color: #000;
@@ -159,3 +161,9 @@ text-underline-position: from-font;
   text-decoration: underline;
   color: inherit;
 }
+
+@media (min-width: 768px) {
+  .md\:max-w-\[10\.25rem\] {
+    max-width: 10.25rem;
+  }
+} 

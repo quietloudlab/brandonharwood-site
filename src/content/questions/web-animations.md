@@ -2,7 +2,7 @@
 title: "Web Animation Performance"
 layout: "post"
 date: 2024-03-24
-type: "answering-questions"
+type: "answered question"
 description: "Answering common questions about web animation performance and best practices."
 tags: 
   - animation
