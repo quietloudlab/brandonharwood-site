@@ -1670,8 +1670,8 @@ a {
 }
 
 .post-card {
-  transition: box-shadow 0.2s ease;
-  margin-bottom: 4rem;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
 }
 
 .post-card:last-child {

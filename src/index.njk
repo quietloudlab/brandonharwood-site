@@ -7,7 +7,7 @@ title: Home
   <!-- Mobile Menu Button -->
   <button 
     id="menuToggle" 
-    class="md:hidden fixed top-4 right-4 z-50 p-2 bg-white/[0.01] backdrop-blur-xl border border-[#e3e3e3]"
+    class="md:hidden fixed top-4 right-4 z-50 p-2 bg-white/[0.01] backdrop-blur-xl  bborderorder-[#e3e3e3]"
     aria-label="Toggle navigation menu"
     aria-expanded="false"
   >
@@ -82,7 +82,7 @@ title: Home
             <div class="italic text-[0.75rem] leading-7">it's a place</div>
           </div>
           <div class="flex-1">
-            <p class="text-[1rem] leading-7">where made and broken and written things can be pushed out to the internet without worrying over whether they're perfect, or done, or if people find them interesting, or anything.<br/><br/>They're for me to use and gather over time, <span class="italic">and</span> for others to check out if they want.</p>
+            <p class="text-[1rem] leading-7">where made and broken and written things can be pushed out to the internet without worrying over whether they're perfect, or done, or if people find them interesting, or anything!<br/><br/>It's all for fun! </p>
           </div>
         </div>
 
@@ -97,10 +97,10 @@ title: Home
 
         <div class="flex gap-4">
           <div class="flex-1 max-w-[8.25rem]">
-            <div class="italic text-[0.75rem] leading-7">in a way</div>
+            <div class="italic text-[0.75rem] leading-7">it's kind of</div>
           </div>
           <div class="flex-1">
-            <p class="text-[1rem] leading-7">it's kind of a replacement for social media, since social media stopped doing what I enjoyed about it in the first place. It's probably going to focus more on things like technologies, cultures, futures, sciences, and design, but I'll probably post my dog and cat and pictures of vacations every once in a while too.</p>
+            <p class="text-[1rem] leading-7">a replacement for social media, in a way. Social media stopped doing a lot of the things we found fun and interesting about it back in grade school. It's probably going to focus more on things like technologies, cultures, futures, sciences, and design, but I'll probably post my dog and cat and pictures of vacations every once in a while too.</p>
           </div>
         </div>
 
@@ -109,7 +109,7 @@ title: Home
             <div class="italic text-[0.75rem] leading-7">I'm not</div>
           </div>
           <div class="flex-1">
-            <p class="text-[1rem] leading-7">forcing anything, or intending to shove data slop at people for the sake of influence. I'm not even sure I'll track analytics. Y'all should only see what I'm shouting out into the void if you're really that interested enough to go out of your way and look for it here - or if you're really that interested and subscribe to updates through RSS or Email.</p>
+            <p class="text-[1rem] leading-7">forcing anything, or intending to shove data at people for the sake of influence. I'm not even sure I'll track analytics. Y'all should only see what I'm shouting out into the void if you're really <span class="italic">that</span> interested that you'll go out of your way and look for it here - or if you're really <span class="italic">that</span> interested and subscribe to updates through RSS or Email.</p>
           </div>
         </div>
 
@@ -145,7 +145,7 @@ title: Home
     <!-- Blog Feed Section -->
     <section id="feed" class="w-full max-w-[75rem] space-y-4">
       {% for post in collections.allPosts %}
-        <article class="post-card flex flex-col md:flex-row gap-4 py-6 border-t border-[#C0C0C0]" data-type="{{ post.data.type }}">
+        <article class="post-card flex flex-col md:flex-row gap-4 py-6 border-t border-[#000000]" data-type="{{ post.data.type }}">
           <!-- Left Column - Type and Date only -->
           <div class="w-full md:max-w-[8.25rem] flex flex-col gap-4">
             <div class="text-black text-[0.75rem] font-italic font-baskerville italic underline leading-6">
