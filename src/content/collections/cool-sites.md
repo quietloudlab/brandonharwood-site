@@ -2,6 +2,11 @@
 title: cool design things
 description: Designed things and design things
 layout: collection
+tags:
+  - design
+  - images
+  - quotes
+  - links
 items:
   - type: link
     content: https://slownet.work/
