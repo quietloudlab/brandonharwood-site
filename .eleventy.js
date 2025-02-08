@@ -55,18 +55,9 @@ module.exports = function(eleventyConfig) {
 
   // Collections
   eleventyConfig.addCollection("allPosts", function(collectionApi) {
-    return collectionApi.getFilteredByGlob([
-      "src/content/weblogs/**/*.md",
-      "src/content/made-things/**/*.md",
-      "src/content/collections/**/*.md",
-      "src/content/questions/**/*.md",
-      "src/content/weird-interactions/**/*.md"
-    ]).sort((a, b) => {
-      // Get dates from the data object where Eleventy stores frontmatter
-      const dateA = a.data.date || a.date;
-      const dateB = b.data.date || b.date;
-      // Convert to timestamps for comparison
-      return dateB.getTime() - dateA.getTime();
+    return collectionApi.getAll().filter(item => {
+      // Filter for items that should be in the feed
+      return item.data.type !== undefined;
     });
   });
 
@@ -178,6 +169,11 @@ module.exports = function(eleventyConfig) {
       console.error(`Error processing image ${imagePath}:`, error);
       return `<!-- Error processing image ${imagePath} -->`;
     }
+  });
+
+  eleventyConfig.addFilter('removeDefaultTags', function(tags) {
+    const defaultTags = ['post', 'all', 'posts'];
+    return tags ? tags.filter(tag => !defaultTags.includes(tag)) : [];
   });
 
 // Filters and Passthrough Copies (keep everything else as-is)

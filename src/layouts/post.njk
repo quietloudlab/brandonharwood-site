@@ -2,23 +2,48 @@
 layout: base.njk
 ---
 
-<article class="flex flex-col items-center p-8 md:px-20 pt-16 pb-16 gap-6">
-  <div class="w-full max-w-[75rem]">
-    <!-- Post Header -->
-    <header class="flex flex-col gap-4 pb-6 border-b border-[#C0C0C0]">
-      {% if image %}
-        <div class="flex flex-col md:flex-row gap-4 mb-8">
-          <div class="w-full md:max-w-[10.25rem]">
-            <button 
-              onclick="handleBack()"
-              class="flex items-center gap-2 text-[#333333] hover:text-[#001EFF] font-baskerville text-[1rem] transition-colors"
-              aria-label="Go back to previous page"
-            >
-              <span aria-hidden="true">←</span>
-              <span>back</span>
-            </button>
+<div class="min-h-screen flex flex-col md:flex-row">
+  <!-- Sidebar -->
+  <aside class="relative md:fixed bg-white/[0.01] backdrop-blur-xl md:sticky md:top-0 sidebar-width p-4 back-nav z-40 md:h-screen flex flex-col">
+    <div class="flex flex-col flex-1 min-h-0">
+      <div class="mt-0">
+        <!-- Back Button -->
+        <button 
+          onclick="handleBack()"
+          class="flex items-center gap-2 text-[#333333] hover:text-[#001EFF] font-baskerville text-[1rem] transition-colors"
+          aria-label="Go back to previous page"
+        >
+          <span aria-hidden="true">←</span>
+          <span>back</span>
+        </button>
+
+        <!-- Post Type and Date -->
+        <div class="mt-8">
+          <div class="text-black text-[0.75rem] font-italic font-baskerville italic underline leading-6">
+            {{ type }}
           </div>
-          <div class="flex-1">
+          <div class="text-[#000000] text-[0.75rem] font-baskerville italic mt-4">
+            {{ page.date | dateReadable }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 md:px-20 pt-16 pb-16">
+    <div class="max-w-[75rem] mx-auto">
+      <!-- Post Header -->
+      <header class="flex flex-col gap-4 pb-6 border-b border-[#C0C0C0]">
+        <div class="flex-1">
+          <h1 class="site-header w-full text-[2rem] font-manrope font-semibold">{{ title }}</h1>
+          {% if description %}
+            <p class="text-black font-baskerville text-[1rem] leading-7">{{ description }}</p>
+          {% endif %}
+        </div>
+        
+        {% if image %}
+          <div class="mb-8">
             <img 
               src="{{ image }}" 
               alt="{{ image_alt or 'Featured image' }}"
@@ -26,37 +51,11 @@ layout: base.njk
               loading="eager"
             >
           </div>
-        </div>
-      {% endif %}
+        {% endif %}
+      </header>
 
-      <div class="flex flex-col md:flex-row gap-4">
-        <!-- Left Column - Type and Date -->
-        <div class="w-full md:max-w-[10.25rem] flex flex-col gap-4">
-          <div class="text-black text-[0.75rem] font-italic font-baskerville italic underline leading-6">
-            {{ type }}
-          </div>
-          <div class="text-[#000000] text-[0.75rem] font-baskerville italic">
-            {{ page.date | dateReadable }}
-          </div>
-        </div>
-
-        <!-- Right Column - Title -->
-        <div class="flex-1">
-          <h1 class="text-black text-[2rem] font-manrope font-semibold mb-4">{{ title }}</h1>
-          {% if description %}
-            <p class="text-black font-baskerville text-[1rem] leading-7">{{ description }}</p>
-          {% endif %}
-        </div>
-      </div>
-    </header>
-
-    <!-- Main Content -->
-    <div class="flex flex-col md:flex-row gap-4 py-8">
-      <!-- Left Column Spacer -->
-      <div class="hidden md:block md:w-[10.25rem]"></div>
-
-      <!-- Right Column - Content -->
-      <div class="flex-1">
+      <!-- Main Content -->
+      <div class="py-8">
         <div class="prose prose-lg max-w-none font-baskerville">
           <style>
             /* Override prose defaults */
@@ -99,148 +98,147 @@ layout: base.njk
           {{ content | safe }}
         </div>
 
-          <div class="flex-1 text-right">
-            {% if nextPost %}
-              <a href="{{ nextPost.url }}" 
-                class="flex items-center justify-end gap-2 text-[#001EFF] hover:underline font-baskerville text-[1rem]" 
-                rel="next"
-                aria-label="Next post: {{ nextPost.data.title }}"
-              >
-                <span>{{ nextPost.data.title }}</span>
-                <span aria-hidden="true">→</span>
-              </a>
-            {% endif %}
-          </div>
-        </nav>
-
-        <!-- Comments Section -->
-        <section class="mt-12 pt-8 border-t border-[#C0C0C0]" aria-labelledby="comments-title">
-          <h2 id="comments-title" class="text-[2rem] font-manrope font-semibold mb-8">Comments</h2>
-          
-          <div id="existing-comments" class="space-y-6 mb-12">
-            {% set postComments = comments[page.fileSlug] %}
-            {% if postComments and postComments.length > 0 %}
-              {% for comment in postComments | reverse %}
-                <div class="comment bg-[#F9F9F9] rounded-lg p-6">
-                  <div class="flex items-center gap-2 mb-2">
-                    <strong class="font-manrope font-medium text-[0.875rem]">{{ comment.name }}</strong>
-                    <span aria-hidden="true" class="text-[#666666]">•</span>
-                    <time 
-                      datetime="{{ comment.timestamp }}"
-                      class="comment-time text-[#666666] text-[0.875rem] font-baskerville italic"
-                      data-timestamp="{{ comment.timestamp }}"
-                    ></time>
-                  </div>
-                  <p class="text-black font-baskerville text-[1rem] leading-7 whitespace-pre-wrap">{{ comment.comment }}</p>
-                </div>
-              {% endfor %}
-            {% else %}
-              <p class="text-[#666666] italic font-baskerville text-[1rem]">No comments yet. Be the first to comment!</p>
-            {% endif %}
-          </div>
-
-          <form id="comment-form" class="space-y-6" aria-labelledby="comment-form-title">
-            <h3 id="comment-form-title" class="text-[1.5rem] font-manrope font-semibold">Add a Comment</h3>
-            
-            {# Honeypot field #}
-            <div class="hidden" aria-hidden="true">
-              <label for="website">Website</label>
-              <input type="text" id="website" name="website" autocomplete="off" tabindex="-1">
-            </div>
-
-            <div class="form-group">
-              <label for="name" class="block text-[0.875rem] font-manrope font-medium mb-1">Name *</label>
-              <input 
-                type="text" 
-                id="name" 
-                name="name" 
-                required 
-                maxlength="50"
-                class="w-full px-3 py-2 border border-[#C0C0C0] rounded-md focus:ring-[#001EFF] focus:border-[#001EFF]"
-                aria-required="true"
-                aria-describedby="name-error"
-              >
-              <div id="name-error" class="text-red-600 text-[0.875rem] mt-1 hidden"></div>
-            </div>
-
-            <div class="form-group">
-              <label for="comment" class="block text-[0.875rem] font-manrope font-medium mb-1">Comment *</label>
-              <textarea 
-                id="comment" 
-                name="comment" 
-                required 
-                maxlength="1000"
-                rows="4"
-                class="w-full px-3 py-2 border border-[#C0C0C0] rounded-md focus:ring-[#001EFF] focus:border-[#001EFF]"
-                aria-required="true"
-                aria-describedby="comment-error"
-              ></textarea>
-              <div id="comment-error" class="text-red-600 text-[0.875rem] mt-1 hidden"></div>
-            </div>
-
-            <input type="hidden" name="postSlug" value="{{ page.fileSlug }}">
-            <input type="hidden" name="csrf" value="{{ csrf_token }}">
-            
-            <button 
-              type="submit"
-              class="w-full py-2 px-4 bg-[#001EFF] text-white rounded-md font-manrope font-medium text-[1rem] hover:bg-[#0018CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#001EFF] disabled:opacity-50 disabled:cursor-not-allowed"
-              aria-label="Submit comment"
+        <div class="flex-1 text-right">
+          {% if nextPost %}
+            <a href="{{ nextPost.url }}" 
+              class="flex items-center justify-end gap-2 text-[#001EFF] hover:underline font-baskerville text-[1rem]" 
+              rel="next"
+              aria-label="Next post: {{ nextPost.data.title }}"
             >
-              <span class="submit-text">Submit Comment</span>
-              <span class="loading-text hidden">
-                Submitting...
-                <span class="ml-2 inline-block animate-spin">↻</span>
-              </span>
-            </button>
+              <span>{{ nextPost.data.title }}</span>
+              <span aria-hidden="true">→</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
 
-            <div 
-              id="form-status" 
-              role="status" 
-              aria-live="polite"
-              class="mt-6 p-4 rounded-md hidden font-baskerville"
-            ></div>
-          </form>
-        </section>
+      <!-- Comments Section -->
+      <section class="mt-12 pt-8 border-t border-[#C0C0C0]" aria-labelledby="comments-title">
+        <h2 id="comments-title" class="text-[2rem] font-manrope font-semibold mb-8">Comments</h2>
+        
+        <div id="existing-comments" class="space-y-6 mb-12">
+          {% set postComments = comments[page.fileSlug] %}
+          {% if postComments and postComments.length > 0 %}
+            {% for comment in postComments | reverse %}
+              <div class="comment bg-[#F9F9F9] rounded-lg p-6">
+                <div class="flex items-center gap-2 mb-2">
+                  <strong class="font-manrope font-medium text-[0.875rem]">{{ comment.name }}</strong>
+                  <span aria-hidden="true" class="text-[#666666]">•</span>
+                  <time 
+                    datetime="{{ comment.timestamp }}"
+                    class="comment-time text-[#666666] text-[0.875rem] font-baskerville italic"
+                    data-timestamp="{{ comment.timestamp }}"
+                  ></time>
+                </div>
+                <p class="text-black font-baskerville text-[1rem] leading-7 whitespace-pre-wrap">{{ comment.comment }}</p>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="text-[#666666] italic font-baskerville text-[1rem]">No comments yet. Be the first to comment!</p>
+          {% endif %}
+        </div>
 
-        <!-- Tags and Social -->
-        <div class="flex justify-between items-center mt-8 pt-6 border-t border-[#C0C0C0]">
-          <div class="flex-1">
-            {% if tags %}
-              <span class="text-[#333333] text-[0.75rem] font-manrope font-medium leading-6">Tags:</span>
-              {% for tag in tags %}
-                {% if tag not in ["all", "nav", "post", "posts"] %}
-                  <a href="/tags/{{ tag }}/" 
-                    class="text-[#333333] text-[0.75rem] font-baskerville underline leading-6"
-                    aria-label="View posts tagged {{ tag }}"
-                  >{{ tag }}</a>{% if not loop.last %}, {% endif %}
-                {% endif %}
-              {% endfor %}
-            {% endif %}
-          </div>
+        <form id="comment-form" class="space-y-6" aria-labelledby="comment-form-title">
+          <h3 id="comment-form-title" class="text-[1.5rem] font-manrope font-semibold">Add a Comment</h3>
           
-          <!-- Social Icons -->
-          <div class="flex gap-4">
-            <button 
-              class="w-6 h-6 bg-[#333333] mask-twitter" 
-              onclick="handleShare('twitter')" 
-              aria-label="Share on Twitter"
-            ></button>
-            <button 
-              class="w-6 h-6 bg-[#333333] mask-facebook"
-              onclick="handleShare('facebook')" 
-              aria-label="Share on Facebook"
-            ></button>
-            <button 
-              class="w-6 h-6 bg-[#333333] mask-linkedin"
-              onclick="handleShare('linkedin')" 
-              aria-label="Share on LinkedIn"
-            ></button>
+          {# Honeypot field #}
+          <div class="hidden" aria-hidden="true">
+            <label for="website">Website</label>
+            <input type="text" id="website" name="website" autocomplete="off" tabindex="-1">
           </div>
+
+          <div class="form-group">
+            <label for="name" class="block text-[0.875rem] font-manrope font-medium mb-1">Name *</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              required 
+              maxlength="50"
+              class="w-full px-3 py-2 border border-[#C0C0C0] rounded-md focus:ring-[#001EFF] focus:border-[#001EFF]"
+              aria-required="true"
+              aria-describedby="name-error"
+            >
+            <div id="name-error" class="text-red-600 text-[0.875rem] mt-1 hidden"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="comment" class="block text-[0.875rem] font-manrope font-medium mb-1">Comment *</label>
+            <textarea 
+              id="comment" 
+              name="comment" 
+              required 
+              maxlength="1000"
+              rows="4"
+              class="w-full px-3 py-2 border border-[#C0C0C0] rounded-md focus:ring-[#001EFF] focus:border-[#001EFF]"
+              aria-required="true"
+              aria-describedby="comment-error"
+            ></textarea>
+            <div id="comment-error" class="text-red-600 text-[0.875rem] mt-1 hidden"></div>
+          </div>
+
+          <input type="hidden" name="postSlug" value="{{ page.fileSlug }}">
+          <input type="hidden" name="csrf" value="{{ csrf_token }}">
+          
+          <button 
+            type="submit"
+            class="w-full py-2 px-4 bg-[#001EFF] text-white rounded-md font-manrope font-medium text-[1rem] hover:bg-[#0018CC] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#001EFF] disabled:opacity-50 disabled:cursor-not-allowed"
+            aria-label="Submit comment"
+          >
+            <span class="submit-text">Submit Comment</span>
+            <span class="loading-text hidden">
+              Submitting...
+              <span class="ml-2 inline-block animate-spin">↻</span>
+            </span>
+          </button>
+
+          <div 
+            id="form-status" 
+            role="status" 
+            aria-live="polite"
+            class="mt-6 p-4 rounded-md hidden font-baskerville"
+          ></div>
+        </form>
+      </section>
+
+      <!-- Tags and Social -->
+      <div class="flex justify-between items-center mt-8 pt-6 border-t border-[#C0C0C0]">
+        <div class="flex-1">
+          {% if tags %}
+            <span class="text-[#333333] text-[0.75rem] font-manrope font-medium leading-6">Tags:</span>
+            {% for tag in tags %}
+              {% if tag not in ["all", "nav", "post", "posts"] %}
+                <a href="/tags/{{ tag }}/" 
+                  class="text-[#333333] text-[0.75rem] font-baskerville underline leading-6"
+                  aria-label="View posts tagged {{ tag }}"
+                >{{ tag }}</a>{% if not loop.last %}, {% endif %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+        
+        <!-- Social Icons -->
+        <div class="flex gap-4">
+          <button 
+            class="w-6 h-6 bg-[#333333] mask-twitter" 
+            onclick="handleShare('twitter')" 
+            aria-label="Share on Twitter"
+          ></button>
+          <button 
+            class="w-6 h-6 bg-[#333333] mask-facebook"
+            onclick="handleShare('facebook')" 
+            aria-label="Share on Facebook"
+          ></button>
+          <button 
+            class="w-6 h-6 bg-[#333333] mask-linkedin"
+            onclick="handleShare('linkedin')" 
+            aria-label="Share on LinkedIn"
+          ></button>
         </div>
       </div>
     </div>
-  </div>
-</article>
+  </main>
+</div>
 
 <script>
   // Back button handling

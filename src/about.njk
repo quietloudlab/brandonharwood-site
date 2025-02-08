@@ -1,0 +1,96 @@
+---
+layout: base.njk
+title: About Brandon
+description: Learn more about Brandon - developer, creator, and technologist
+permalink: /about/
+---
+
+<div class="min-h-screen flex flex-col md:flex-row">
+  <!-- Sidebar -->
+  <aside class="relative md:fixed bg-white/[0.01] backdrop-blur-xl md:sticky md:top-0 sidebar-width p-4 back-nav z-40 md:h-screen flex flex-col">
+    <div class="flex flex-col flex-1 min-h-0">
+      <div class="mt-0">
+        <!-- Back Button -->
+        <button 
+          onclick="handleBack()"
+          class="flex items-center gap-2 text-[#333333] hover:text-[#001EFF] font-baskerville text-[1rem] transition-colors"
+          aria-label="Go back to previous page"
+        >
+          <span aria-hidden="true">←</span>
+          <span>back</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 p-8 md:px-20 pt-16 pb-16">
+    <div class="max-w-[75rem] mx-auto">
+      <header class="mb-12">
+        <h1 class="text-[2rem] font-manrope font-semibold mb-4">About Brandon</h1>
+        <p class="text-black font-baskerville text-[1rem] leading-7">{{ description }}</p>
+      </header>
+
+      <!-- Main Content -->
+      <div class="flex flex-col md:flex-row gap-4 py-8">
+        <!-- Left Column Spacer -->
+        <div class="hidden md:block md:w-[10.25rem]"></div>
+
+        <!-- Right Column - Content -->
+        <div class="flex-1">
+          <div class="prose prose-lg max-w-none font-baskerville">
+            <style>
+              /* Override prose defaults */
+              .prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+                @apply text-[1.5rem] font-manrope font-semibold mt-12 mb-4;
+              }
+              .prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+                @apply text-[1rem] leading-7 my-4;
+              }
+              .prose a {
+                @apply text-[#001EFF] underline;
+              }
+            </style>
+
+            <p>
+              Hi, I'm Brandon! I'm a full-stack developer passionate about creating meaningful digital experiences.
+            </p>
+
+            <h2>What I Do</h2>
+            <p>
+              I specialize in building modern web applications using technologies like React, TypeScript, and Node.js. 
+              My focus is on creating accessible, performant, and user-friendly solutions.
+            </p>
+
+            <h2>My Background</h2>
+            <p>
+              With [X] years of experience in software development, I've worked on projects ranging from 
+              enterprise applications to experimental web experiences. I'm particularly interested in the 
+              intersection of technology and user experience.
+            </p>
+
+            <h2>Get in Touch</h2>
+            <p>
+              Feel free to reach out to me through <a href="https://twitter.com/yourusername">Twitter</a> 
+              or <a href="https://github.com/yourusername">GitHub</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  // Back button handling
+  function handleBack() {
+    const previousPage = document.referrer;
+    const homeUrl = '/';
+    
+    if (previousPage && previousPage.includes(window.location.origin)) {
+      history.back();
+    } else {
+      window.location.href = homeUrl;
+    }
+  }
+</script> 

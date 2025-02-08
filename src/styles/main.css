@@ -36,6 +36,18 @@ h1 {
   padding-bottom: 4rem;
 }
 
+/* Page header (collection, experiment, etc) gets modified spacing */
+.page-header {
+  color: #000;
+  font-family: Manrope;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.1;
+  max-width: 75rem;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
 
 a {
   text-decoration: none;
@@ -103,13 +115,18 @@ a {
   align-items: flex-start;
   max-width: 10rem;
   max-height: 100vh;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
 }
 
 @media (max-width: 768px) {
   .navigation {
     max-width: none;
-    padding-top: 0;
-    margin-top: -1rem;
+    padding-top: 2rem;
+    padding-left: 2rem;
+    padding-bottom: 2rem;
+    font-size: 1.25rem;
   }
 }
 
@@ -199,4 +216,31 @@ text-underline-position: from-font;
 
 .hover\:shadow-lg {
   transition: all 0.2s ease-in-out;
+}
+
+.back-nav {
+  color: #000;
+  font-family: Manrope;
+  font-size: .8rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 2rem;
+  padding-left: 2rem;
+  width: auto;
+}
+
+
+@media (max-width: 768px) {
+  .back-nav {
+    max-width: none;
+    border-bottom: 1px solid #C0C0C0;
+  }
+}
+
+.sidebar-width {
+  width: auto;
 }

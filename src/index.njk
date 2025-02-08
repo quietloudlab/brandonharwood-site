@@ -7,7 +7,7 @@ title: Home
   <!-- Mobile Menu Button -->
   <button 
     id="menuToggle" 
-    class="md:hidden fixed top-4 right-4 z-50 p-2 bg-white/[0.01] backdrop-blur-xl  bborderorder-[#e3e3e3]"
+    class="md:hidden fixed top-4 right-4 z-50 p-2 bg-white/[0.01] backdrop-blur-xl bborderorder-[#e3e3e3]"
     aria-label="Toggle navigation menu"
     aria-expanded="false"
   >
@@ -20,7 +20,7 @@ title: Home
   <!-- Sidebar (Filters) -->
   <aside class="fixed bg-white/[0.01] backdrop-blur-xl md:sticky md:top-0 inset-0 transform -translate-x-full md:translate-x-0 transition-transform duration-250 ease-in-out w-screen md:w-60 p-4 navigation z-40 h-screen flex flex-col">
     <div class="flex flex-col flex-1 min-h-0">
-      <h1 class="text-[1.25rem] sitetitle mt-12 md:mt-0">brandon harwood</h1>
+      <h1 class="text-[1.25rem] sitetitle">brandon harwood</h1>
       <ul class="mt-4 space-y-4 flex-none">
         <li><a href="#" class="filter-link active" data-filter="weblog">weblogs</a></li>
         <li><a href="#" class="filter-link active" data-filter="collection">collections</a></li>
@@ -64,15 +64,6 @@ title: Home
           </li>
         </ul>
       </div>
-
-      <!-- Add this HTML after the filter list -->
-      <button 
-        id="selectAllFilters"
-        class="mt-4 text-sm font-manrope text-gray-500 hover:text-[#001EFF] transition-colors"
-        aria-pressed="true"
-      >
-        Select All Types
-      </button>
     </div>
   </aside>
 
@@ -154,7 +145,10 @@ title: Home
     <!-- Blog Feed Section -->
     <section id="feed" class="w-full max-w-[75rem] space-y-4">
       {% for post in collections.allPosts %}
-        <article class="post-card flex flex-col md:flex-row gap-4 py-6 border-t border-[#000000]" data-type="{{ post.data.type }}">
+        <article class="post-card flex flex-col md:flex-row gap-4 py-6 border-t border-[#000000]" 
+          data-type="{{ post.data.type }}"
+          data-tags="{{ post.data.tags | default([]) | join(',') }}"
+        >
           <!-- Left Column - Type and Date only -->
           <div class="w-full md:max-w-[8.25rem] flex flex-col gap-4">
             <div class="text-black text-[0.75rem] font-italic font-baskerville italic underline leading-6">
@@ -206,17 +200,20 @@ title: Home
             <!-- Tags and Social -->
             <div class="flex justify-between items-center">
               <div class="flex-1">
-                <span class="text-[#333333] text-[0.75rem] font-manrope font-medium leading-6">Tags:</span>
-                {% for tag in post.data.tags %}
-                  {% if tag != "post" %}
-                    <a href="#" 
-                      class="tag-filter text-[#333333] text-[0.75rem] font-baskerville underline leading-6" 
-                      data-tag="{{ tag }}"
-                      role="button"
-                      aria-pressed="false"
-                    >{{ tag }}</a>{% if not loop.last %}, {% endif %}
+                {% if post.data.tags and post.data.tags.length > 0 %}
+                  <span class="text-[#333333] text-[0.75rem] font-manrope font-medium leading-6">Tags:</span>
+                  {% set displayTags = post.data.tags | removeDefaultTags %}
+                  {% if displayTags.length > 0 %}
+                    {% for tag in displayTags %}
+                      <a href="#" 
+                        class="tag-filter text-[#333333] text-[0.75rem] font-baskerville underline leading-6" 
+                        data-tag="{{ tag }}"
+                        role="button"
+                        aria-pressed="false"
+                      >{{ tag }}</a>{% if not loop.last %}, {% endif %}
+                    {% endfor %}
                   {% endif %}
-                {% endfor %}
+                {% endif %}
               </div>
               
               <!-- Social Icons -->
@@ -337,7 +334,7 @@ title: Home
 
     cards.forEach(card => {
       const type = card.dataset.type;
-      const cardTags = Array.from(card.querySelectorAll('.tag-filter')).map(tag => tag.dataset.tag);
+      const cardTags = card.dataset.tags ? card.dataset.tags.split(',') : [];
       
       const matchesType = activeFilters.size === 0 || activeFilters.has(type);
       const matchesTags = activeTags.size === 0 || Array.from(activeTags).some(tag => cardTags.includes(tag));

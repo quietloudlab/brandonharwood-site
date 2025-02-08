@@ -1101,11 +1101,17 @@ video {
 .relative {
   position: relative;
 }
+.sticky {
+  position: sticky;
+}
 .inset-0 {
   inset: 0px;
 }
 .right-4 {
   right: 1rem;
+}
+.top-0 {
+  top: 0px;
 }
 .top-4 {
   top: 1rem;
@@ -1140,6 +1146,9 @@ video {
 }
 .ml-2 {
   margin-left: 0.5rem;
+}
+.mt-0 {
+  margin-top: 0px;
 }
 .mt-1 {
   margin-top: 0.25rem;
@@ -1216,6 +1225,9 @@ video {
 .w-screen {
   width: 100vw;
 }
+.max-w-\[40rem\] {
+  max-width: 40rem;
+}
 .max-w-\[75rem\] {
   max-width: 75rem;
 }
@@ -1238,6 +1250,10 @@ video {
   --tw-translate-x: -100%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.translate-x-0 {
+  --tw-translate-x: 0px;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
@@ -1249,6 +1265,9 @@ video {
 }
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+.resize-none {
+  resize: none;
 }
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -1342,6 +1361,18 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(192 192 192 / var(--tw-border-opacity));
 }
+.border-\[\#e3e3e3\] {
+  --tw-border-opacity: 1;
+  border-color: rgb(227 227 227 / var(--tw-border-opacity));
+}
+.border-green-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(187 247 208 / var(--tw-border-opacity));
+}
+.border-red-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(254 202 202 / var(--tw-border-opacity));
+}
 .bg-\[\#001EFF\] {
   --tw-bg-opacity: 1;
   background-color: rgb(0 30 255 / var(--tw-bg-opacity));
@@ -1366,17 +1397,21 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
-.bg-gray-50 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(249 250 251 / var(--tw-bg-opacity));
-}
 .bg-green-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(220 252 231 / var(--tw-bg-opacity));
 }
+.bg-green-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(240 253 244 / var(--tw-bg-opacity));
+}
 .bg-red-100 {
   --tw-bg-opacity: 1;
   background-color: rgb(254 226 226 / var(--tw-bg-opacity));
+}
+.bg-red-50 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 242 242 / var(--tw-bg-opacity));
 }
 .bg-white\/\[0\.01\] {
   background-color: rgb(255 255 255 / 0.01);
@@ -1387,6 +1422,9 @@ video {
 }
 .p-2 {
   padding: 0.5rem;
+}
+.p-3 {
+  padding: 0.75rem;
 }
 .p-4 {
   padding: 1rem;
@@ -1409,6 +1447,10 @@ video {
   padding-left: 1rem;
   padding-right: 1rem;
 }
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
@@ -1416,6 +1458,10 @@ video {
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
+}
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 .py-6 {
   padding-top: 1.5rem;
@@ -1437,11 +1483,11 @@ video {
 .pb-6 {
   padding-bottom: 1.5rem;
 }
-.pb-8 {
-  padding-bottom: 2rem;
-}
 .pt-16 {
   padding-top: 4rem;
+}
+.pt-4 {
+  padding-top: 1rem;
 }
 .pt-6 {
   padding-top: 1.5rem;
@@ -1461,10 +1507,6 @@ video {
 .font-manrope {
   font-family: Manrope, sans-serif;
 }
-.text-3xl {
-  font-size: 1.875rem;
-  line-height: 2.25rem;
-}
 .text-\[0\.75rem\] {
   font-size: 0.75rem;
 }
@@ -1480,15 +1522,8 @@ video {
 .text-\[1rem\] {
   font-size: 1rem;
 }
-.text-\[28px\] {
-  font-size: 28px;
-}
 .text-\[2rem\] {
   font-size: 2rem;
-}
-.text-base {
-  font-size: 1rem;
-  line-height: 1.5rem;
 }
 .text-sm {
   font-size: 0.875rem;
@@ -1532,10 +1567,6 @@ video {
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
-}
-.text-blue-600 {
-  --tw-text-opacity: 1;
-  color: rgb(37 99 235 / var(--tw-text-opacity));
 }
 .text-gray-500 {
   --tw-text-opacity: 1;
@@ -1638,6 +1669,18 @@ h1 {
   padding-bottom: 4rem;
 }
 
+/* Page header (collection, experiment, etc) gets modified spacing */
+.page-header {
+  color: #000;
+  font-family: Manrope;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.1;
+  max-width: 75rem;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
 
 a {
   text-decoration: none;
@@ -1705,13 +1748,18 @@ a {
   align-items: flex-start;
   max-width: 10rem;
   max-height: 100vh;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-bottom: 1rem;
 }
 
 @media (max-width: 768px) {
   .navigation {
     max-width: none;
-    padding-top: 0;
-    margin-top: -1rem;
+    padding-top: 2rem;
+    padding-left: 2rem;
+    padding-bottom: 2rem;
+    font-size: 1.25rem;
   }
 }
 
@@ -1816,6 +1864,33 @@ text-underline-position: from-font;
   transition: all 0.2s ease-in-out;
 }
 
+.back-nav {
+  color: #000;
+  font-family: Manrope;
+  font-size: .8rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 2rem;
+  padding-left: 2rem;
+  width: auto;
+}
+
+
+@media (max-width: 768px) {
+  .back-nav {
+    max-width: none;
+    border-bottom: 1px solid #C0C0C0;
+  }
+}
+
+.sidebar-width {
+  width: auto;
+}
+
 .hover\:bg-\[\#0018CC\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(0 24 204 / var(--tw-bg-opacity));
@@ -1850,6 +1925,12 @@ text-underline-position: from-font;
   outline-offset: 2px;
 }
 
+.focus\:ring-1:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
 .focus\:ring-2:focus {
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
@@ -1882,6 +1963,10 @@ text-underline-position: from-font;
 
 @media (min-width: 768px) {
 
+  .md\:fixed {
+    position: fixed;
+  }
+
   .md\:sticky {
     position: sticky;
   }
@@ -1890,8 +1975,8 @@ text-underline-position: from-font;
     top: 0px;
   }
 
-  .md\:mt-0 {
-    margin-top: 0px;
+  .md\:mb-0 {
+    margin-bottom: 0px;
   }
 
   .md\:block {
@@ -1902,16 +1987,16 @@ text-underline-position: from-font;
     display: none;
   }
 
+  .md\:h-screen {
+    height: 100vh;
+  }
+
   .md\:w-60 {
     width: 15rem;
   }
 
   .md\:w-\[10\.25rem\] {
     width: 10.25rem;
-  }
-
-  .md\:max-w-\[10\.25rem\] {
-    max-width: 10.25rem;
   }
 
   .md\:max-w-\[8\.25rem\] {
@@ -1925,6 +2010,10 @@ text-underline-position: from-font;
 
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:border-b-0 {
+    border-bottom-width: 0px;
   }
 
   .md\:px-20 {

@@ -55,6 +55,7 @@ collections:
       - { label: "Link to Project", name: "link", widget: "string", hint: "URL to the external or internal project" }
       - { label: "Status", name: "status", widget: "select", options: ["in progress", "completed"], default: "in progress" }
       - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Tags", name: "tags", widget: "list", allow_add: true }
 
   - name: "weird-interactions"
     label: "weird interaction"
@@ -69,6 +70,7 @@ collections:
       - { label: "Embed Code", name: "embed_code", widget: "code", default_language: "html" }
       - { label: "Widget Mode", name: "widget_mode", widget: "boolean", default: false }
       - { label: "Code Language", name: "code_language", widget: "select", options: ["HTML", "CSS", "JavaScript", "Processing", "WebGL"] }
+      - { label: "Tags", name: "tags", widget: "list", allow_add: true }
 
   - name: "questions"
     label: "answered question"
@@ -82,3 +84,4 @@ collections:
       - { label: "Category", name: "category", widget: "select", options: ["personal", "technical", "creative process", "philosophy"] }
       - { label: "Answer", name: "body", widget: "markdown" }
       - { label: "Related Links", name: "links", widget: "list", field: { label: "Link", name: "link", widget: "string" } }
+      - { label: "Tags", name: "tags", widget: "list", allow_add: true }

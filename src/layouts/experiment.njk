@@ -2,42 +2,103 @@
 layout: base.njk
 ---
 
-<article class="p-8">
-  <header>
-    <h1 class="text-3xl font-manrope font-semibold">{{ title }}</h1>
-    <p class="text-sm text-gray-500"><strong>Date:</strong> {{ date | dateReadable }}</p>
-    {% if description %}
-      <p class="mt-2">{{ description }}</p>
-    {% endif %}
-  </header>
+<div class="min-h-screen flex flex-col md:flex-row">
+  <!-- Sidebar -->
+  <aside class="relative md:fixed bg-white/[0.01] backdrop-blur-xl md:sticky md:top-0 sidebar-width p-4 back-nav z-40 md:h-screen flex flex-col border-b md:border-b-0 border-[#C0C0C0] mb-8 md:mb-0">
+    <div class="flex flex-col flex-1 min-h-0">
+      <div class="mt-0">
+        <!-- Back Button -->
+        <button 
+          onclick="handleBack()"
+          class="flex items-center gap-2 text-[#333333] hover:text-[#001EFF] font-baskerville text-[1rem] transition-colors"
+          aria-label="Go back to previous page"
+        >
+          <span aria-hidden="true">←</span>
+          <span>back</span>
+        </button>
+
+        <!-- Experiment Type and Date -->
+        <div class="mt-8">
+          <div class="text-black text-[0.75rem] font-italic font-baskerville italic underline leading-6">
+            experiment
+          </div>
+          <div class="text-[#000000] text-[0.75rem] font-baskerville italic mt-4">
+            {{ date | dateReadable }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 
   <!-- Main Content -->
-  <section class="mt-6">
-    <div class="prose max-w-none">
-      {{ content | safe }}
-    </div>
-  </section>
+  <main class="flex-1 p-8 md:px-20 pt-16 pb-16">
+    <div class="max-w-[75rem] mx-auto">
+      <header class="pb-6 border-b border-[#C0C0C0]">
+        <h1 class="page-header w-full text-[2rem] font-manrope font-semibold">{{ title }}</h1>
+        {% if description %}
+          <p class="text-black font-baskerville text-[1rem] leading-7">{{ description }}</p>
+        {% endif %}
+      </header>
 
-  <!-- Embed/Widget Mode for Weird Interactions -->
-  {% if widget_mode %}
-    <section class="mt-8">
-      <h2>Interactive Widget:</h2>
-      <div class="border rounded-md p-4 bg-gray-50">
-        {{ embed_code | safe }}
+      <!-- Main Content -->
+      <div class="py-8">
+        <div class="prose prose-lg max-w-none font-baskerville">
+          <style>
+            /* Override prose defaults - same as post.njk */
+            .prose :where(h2):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+              @apply text-[1.5rem] font-manrope font-semibold mt-12 mb-4;
+            }
+            .prose :where(p):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+              @apply text-[1rem] leading-7 my-4;
+            }
+            .prose a {
+              @apply text-[#001EFF] underline;
+            }
+          </style>
+          {{ content | safe }}
+        </div>
+
+        <!-- Embed/Widget Mode for Weird Interactions -->
+        {% if widget_mode %}
+          <section class="mt-8 border-t border-[#C0C0C0] pt-8">
+            <h2 class="text-[1.5rem] font-manrope font-semibold mb-4">Interactive Widget</h2>
+            <div class="border rounded-lg p-4 bg-[#F9F9F9]">
+              {{ embed_code | safe }}
+            </div>
+          </section>
+        {% endif %}
+
+        <!-- Made Things - Project Links and Status -->
+        {% if link or status %}
+          <section class="mt-8 border-t border-[#C0C0C0] pt-8">
+            <h2 class="text-[1.5rem] font-manrope font-semibold mb-4">Project Details</h2>
+            {% if link %}
+              <p class="font-baskerville">
+                <strong class="font-manrope">Project Link:</strong> 
+                <a href="{{ link }}" target="_blank" class="text-[#001EFF] underline">{{ link }}</a>
+              </p>
+            {% endif %}
+            {% if status %}
+              <p class="font-baskerville mt-2">
+                <strong class="font-manrope">Status:</strong> {{ status }}
+              </p>
+            {% endif %}
+          </section>
+        {% endif %}
       </div>
-    </section>
-  {% endif %}
+    </div>
+  </main>
+</div>
 
-  <!-- Made Things - Project Links and Status -->
-  {% if link or status %}
-    <section class="mt-8">
-      <h2>Project Details:</h2>
-      {% if link %}
-        <p><strong>Project Link:</strong> <a href="{{ link }}" target="_blank" class="text-blue-600">{{ link }}</a></p>
-      {% endif %}
-      {% if status %}
-        <p><strong>Status:</strong> {{ status }}</p>
-      {% endif %}
-    </section>
-  {% endif %}
-</article>
+<script>
+  function handleBack() {
+    const previousPage = document.referrer;
+    const homeUrl = '/';
+    
+    if (previousPage && previousPage.includes(window.location.origin)) {
+      history.back();
+    } else {
+      window.location.href = homeUrl;
+    }
+  }
+</script>
