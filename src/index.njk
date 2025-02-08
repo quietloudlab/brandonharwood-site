@@ -64,6 +64,15 @@ title: Home
           </li>
         </ul>
       </div>
+
+      <!-- Add this HTML after the filter list -->
+      <button 
+        id="selectAllFilters"
+        class="mt-4 text-sm font-manrope text-gray-500 hover:text-[#001EFF] transition-colors"
+        aria-pressed="true"
+      >
+        Select All Types
+      </button>
     </div>
   </aside>
 
@@ -241,11 +250,12 @@ title: Home
   const tagLinks = document.querySelectorAll('.tag-filter');
   const activeTagsSection = document.getElementById('activeTagsSection');
   const activeTagsContainer = document.getElementById('activeTags');
-  let hasInteracted = false;  // Add this to track first interaction
+  let hasInteracted = false;
 
   // Initialize all filters as active
   filterLinks.forEach(link => {
     link.classList.add('active');
+    link.setAttribute('aria-pressed', 'true');
   });
 
   // Initial display of all cards
@@ -255,27 +265,57 @@ title: Home
     link.addEventListener('click', function(e) {
       e.preventDefault();
       const filter = this.dataset.filter;
+      const allFilters = Array.from(filterLinks).map(link => link.dataset.filter);
+      const allActive = allFilters.every(f => activeFilters.has(f));
       
-      if (!hasInteracted) {
-        // First interaction - clear all filters except the clicked one
+      if (allActive) {
+        // If all filters are active, deselect all except clicked one
         activeFilters.clear();
-        filterLinks.forEach(link => link.classList.remove('active'));
+        filterLinks.forEach(link => {
+          link.classList.remove('active');
+          link.setAttribute('aria-pressed', 'false');
+        });
         activeFilters.add(filter);
         this.classList.add('active');
+        this.setAttribute('aria-pressed', 'true');
+      } else if (!hasInteracted) {
+        // First interaction - clear all filters except the clicked one
+        activeFilters.clear();
+        filterLinks.forEach(link => {
+          link.classList.remove('active');
+          link.setAttribute('aria-pressed', 'false');
+        });
+        activeFilters.add(filter);
+        this.classList.add('active');
+        this.setAttribute('aria-pressed', 'true');
         hasInteracted = true;
-      } else {
-        // Normal toggle behavior
-        if (activeFilters.has(filter)) {
-          // Don't allow deselecting if it's the last active filter
-          if (activeFilters.size > 1) {
-            activeFilters.delete(filter);
-            this.classList.remove('active');
-          }
-        } else {
-          activeFilters.add(filter);
-          this.classList.add('active');
+      } else if (activeFilters.size === 1 && activeFilters.has(filter)) {
+        // If clicking the only active filter, activate all filters
+        filterLinks.forEach(link => {
+          const filterType = link.dataset.filter;
+          activeFilters.add(filterType);
+          link.classList.add('active');
+          link.setAttribute('aria-pressed', 'true');
+        });
+      } else if (activeFilters.has(filter)) {
+        // Don't allow deselecting if it's the last active filter
+        if (activeFilters.size > 1) {
+          activeFilters.delete(filter);
+          this.classList.remove('active');
+          this.setAttribute('aria-pressed', 'false');
         }
+      } else {
+        // Add new filter
+        activeFilters.add(filter);
+        this.classList.add('active');
+        this.setAttribute('aria-pressed', 'true');
       }
+
+      // Add a subtle animation to show the filter change
+      this.style.transform = 'scale(0.95)';
+      setTimeout(() => {
+        this.style.transform = 'scale(1)';
+      }, 150);
 
       updateCardVisibility();
 
@@ -286,16 +326,45 @@ title: Home
     });
   });
 
+  // Add hover effect to show interactivity
+  filterLinks.forEach(link => {
+    link.classList.add('transition-all', 'duration-150', 'hover:opacity-80');
+  });
+
   function updateCardVisibility() {
-    document.querySelectorAll('.post-card').forEach(card => {
+    const cards = document.querySelectorAll('.post-card');
+    let visibleCards = 0;
+
+    cards.forEach(card => {
       const type = card.dataset.type;
       const cardTags = Array.from(card.querySelectorAll('.tag-filter')).map(tag => tag.dataset.tag);
       
       const matchesType = activeFilters.size === 0 || activeFilters.has(type);
       const matchesTags = activeTags.size === 0 || Array.from(activeTags).some(tag => cardTags.includes(tag));
       
-      card.style.display = matchesType && matchesTags ? 'flex' : 'none';
+      const isVisible = matchesType && matchesTags;
+      card.style.display = isVisible ? 'flex' : 'none';
+      if (isVisible) visibleCards++;
     });
+
+    // Remove existing no-content message if it exists
+    const existingMessage = document.getElementById('no-content-message');
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+
+    // Add no-content message if no cards are visible
+    if (visibleCards === 0) {
+      const feed = document.getElementById('feed');
+      const message = document.createElement('div');
+      message.id = 'no-content-message';
+      message.className = 'py-8 text-center font-baskerville italic';
+      message.innerHTML = `
+        <p class="text-[1rem] text-gray-600">No content available for the selected filters.</p>
+        <p class="text-[0.875rem] text-gray-500 mt-2">Try selecting different filters to see more content.</p>
+      `;
+      feed.appendChild(message);
+    }
   }
 
   // Existing mobile menu logic
@@ -408,5 +477,25 @@ title: Home
       window.scrollTo(0, parseInt(scrollPosition));
       sessionStorage.removeItem('scrollPosition');
     }
+  });
+
+  // Add this JavaScript
+  const selectAllButton = document.getElementById('selectAllFilters');
+  
+  selectAllButton.addEventListener('click', () => {
+    const allFilters = Array.from(filterLinks).map(link => link.dataset.filter);
+    const allActive = allFilters.every(f => activeFilters.has(f));
+    
+    if (!allActive) {
+      // Select all
+      allFilters.forEach(filter => activeFilters.add(filter));
+      filterLinks.forEach(link => {
+        link.classList.add('active');
+        link.setAttribute('aria-pressed', 'true');
+      });
+      selectAllButton.setAttribute('aria-pressed', 'true');
+    }
+    
+    updateCardVisibility();
   });
 </script>
