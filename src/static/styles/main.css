@@ -1213,6 +1213,9 @@ video {
 .min-h-screen {
   min-height: 100vh;
 }
+.w-1\/2 {
+  width: 50%;
+}
 .w-6 {
   width: 1.5rem;
 }
@@ -1265,6 +1268,9 @@ video {
 }
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+.cursor-pointer {
+  cursor: pointer;
 }
 .resize-none {
   resize: none;
@@ -1328,9 +1334,6 @@ video {
 }
 .whitespace-pre-wrap {
   white-space: pre-wrap;
-}
-.break-words {
-  overflow-wrap: break-word;
 }
 .rounded {
   border-radius: 0.25rem;
@@ -1595,6 +1598,9 @@ video {
 .underline {
   text-decoration-line: underline;
 }
+.opacity-50 {
+  opacity: 0.5;
+}
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
@@ -1696,6 +1702,7 @@ a {
   transform: translateZ(0); /* Enable hardware acceleration */
   backface-visibility: hidden; /* Prevent flickering */
   will-change: opacity, transform; /* Optimize animations */
+  z-index: 1;
 }
 
 .filter-link::after {
@@ -1714,17 +1721,23 @@ a {
 
 .filter-link:hover {
   opacity: 0.8;
-  transform: scale(1.02);
+  transform: scale(1.5);
+  text-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
 }
 
 .filter-link.active {
   opacity: 1;
   font-weight: 600;
   transform: scale(1.05);
+  text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
 }
 
 .filter-link.active::after {
   transform: scaleX(1);
+}
+
+.filter-link.active-touch {
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
 }
 
 .post-card {
@@ -1751,6 +1764,9 @@ a {
   padding-top: 1rem;
   padding-left: 1rem;
   padding-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(8px);
+          backdrop-filter: blur(8px);
 }
 
 @media (max-width: 768px) {
@@ -1839,6 +1855,7 @@ text-underline-position: from-font;
 /* Prose styles for blog content */
 .prose {
   max-width: 65ch;
+  --tw-prose-body: #000000;
 }
 
 .prose a {
@@ -1891,6 +1908,57 @@ text-underline-position: from-font;
   width: auto;
 }
 
+/* Material Icons styles */
+.material-icon {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optional: Variants for different sizes */
+.material-icon--small {
+  font-size: 18px;
+}
+
+.material-icon--large {
+  font-size: 36px;
+}
+
+/* Adjust icon alignment in links */
+.post-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.post-card a .material-icon {
+  color: #666; /* subtle gray color for the icon */
+  font-variation-settings: 
+    'FILL' 0,
+    'wght' 300,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.post-card a:hover .material-icon {
+  color: currentColor; /* match text color on hover */
+}
+
 .hover\:bg-\[\#0018CC\]:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(0 24 204 / var(--tw-bg-opacity));
@@ -1899,6 +1967,11 @@ text-underline-position: from-font;
 .hover\:text-\[\#001EFF\]:hover {
   --tw-text-opacity: 1;
   color: rgb(0 30 255 / var(--tw-text-opacity));
+}
+
+.hover\:text-gray-700:hover {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
 }
 
 .hover\:underline:hover {
@@ -1979,10 +2052,6 @@ text-underline-position: from-font;
     margin-bottom: 0px;
   }
 
-  .md\:block {
-    display: block;
-  }
-
   .md\:hidden {
     display: none;
   }
@@ -1993,10 +2062,6 @@ text-underline-position: from-font;
 
   .md\:w-60 {
     width: 15rem;
-  }
-
-  .md\:w-\[10\.25rem\] {
-    width: 10.25rem;
   }
 
   .md\:max-w-\[8\.25rem\] {

@@ -35,20 +35,19 @@ layout: base.njk
         <p class="text-black font-baskerville text-[1rem] leading-7">{{ description }}</p>
       </header>
 
-      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+      <section class="masonry-grid mt-8">
         {% for item in items %}
-          <div class="bg-[#f9f9f9] p-4 rounded-lg shadow hover:shadow-lg transition-shadow">
+          <div class="masonry-item {% if item.type == 'link' %}p-0{% else %}p-4{% endif %} bg-[#f9f9f9] rounded-lg shadow hover:shadow-lg transition-shadow">
             {% if item.type == "link" %}
               <!-- Link Preview -->
-              <a href="{{ item.content }}" target="_blank" rel="noopener noreferrer" class="block">
-                <div class="aspect-w-16 aspect-h-9 overflow-hidden rounded-md bg-gray-200">
+              <a href="{{ item.content }}" target="_blank" rel="noopener noreferrer" class="block hover:underline cursor-pointer">
+                <div class="w-full h-full">
                     <img 
                     src="{{ linkPreviewImage[loop.index0] }}" 
                     alt="Preview for {{ item.content }}" 
-                    class="w-full h-40 object-cover rounded"
+                    class="w-full h-[240px] object-cover rounded-lg"
                     />
                 </div>
-                <p class="mt-2 text-sm font-manrope text-[#001EFF] underline break-words">{{ item.content }}</p>
               </a>
 
             {% elseif item.type == "image" %}
@@ -83,3 +82,36 @@ layout: base.njk
     }
   }
 </script>
+
+<style>
+  .collection-external-link {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24' fill='%23000000'%3E%3Cpath d='M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm280-360Zm167-220 64 64-284 284H360v-67l287-281Zm133 133-63-64 32-32q12-12 31-12t31 12l32 32q12 12 12 31t-12 31l-63 2Z'/%3E%3C/svg%3E") 12 12, auto;
+  }
+
+  .masonry-grid {
+    columns: 3;
+    column-gap: 2rem;
+  }
+
+  .masonry-item {
+    break-inside: avoid;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    .masonry-grid {
+      columns: 2;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .masonry-grid {
+      columns: 1;
+      column-gap: 1rem;
+    }
+    
+    .masonry-item {
+      margin-bottom: 1rem;
+    }
+  }
+</style>

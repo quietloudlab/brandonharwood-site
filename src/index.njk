@@ -174,8 +174,25 @@ title: Home
 
             <!-- Title -->
             <h2 class="text-black text-[2rem] font-manrope font-semibold">
-              {% if post.data.external %}
-                <a href="{{ post.data.link }}" target="_blank" rel="noopener noreferrer">{{ post.data.title }}</a>
+              {% if post.data.type == "made thing" %}
+                <div class="flex flex-col gap-1">
+                  <a 
+                    href="{{ post.url }}" 
+                    onclick="saveScrollPosition()"
+                    class="hover:text-[#001EFF] transition-colors"
+                  >{{ post.data.title }}</a>
+                  {% if post.data.link %}
+                    <a 
+                      href="{{ post.data.link }}" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      class="text-sm font-manrope text-[#666666] hover:text-[#001EFF] transition-colors flex items-center gap-1"
+                    >
+                      view this thing
+                      <span class="material-icon material-icon--small">open_in_new</span>
+                    </a>
+                  {% endif %}
+                </div>
               {% else %}
                 <a 
                   href="{{ post.url }}" 
@@ -295,8 +312,16 @@ title: Home
           link.setAttribute('aria-pressed', 'true');
         });
       } else if (activeFilters.has(filter)) {
-        // Don't allow deselecting if it's the last active filter
-        if (activeFilters.size > 1) {
+        // If it's the last active filter, select all filters
+        if (activeFilters.size === 1) {
+          filterLinks.forEach(link => {
+            const filterType = link.dataset.filter;
+            activeFilters.add(filterType);
+            link.classList.add('active');
+            link.setAttribute('aria-pressed', 'true');
+          });
+        } else {
+          // Otherwise, deselect this filter
           activeFilters.delete(filter);
           this.classList.remove('active');
           this.setAttribute('aria-pressed', 'false');
@@ -315,6 +340,7 @@ title: Home
       }, 150);
 
       updateCardVisibility();
+      saveFilterState();
     });
   });
 
@@ -323,7 +349,30 @@ title: Home
     link.classList.add('transition-all', 'duration-150', 'hover:opacity-80');
   });
 
-  function updateCardVisibility() {
+  // Add touch event handling for better mobile interaction
+  filterLinks.forEach(link => {
+    link.addEventListener('touchstart', function(e) {
+      this.classList.add('active-touch');
+    });
+    
+    link.addEventListener('touchend', function(e) {
+      this.classList.remove('active-touch');
+    });
+  });
+
+  function showLoadingState() {
+    const feed = document.getElementById('feed');
+    feed.classList.add('opacity-50');
+  }
+
+  function hideLoadingState() {
+    const feed = document.getElementById('feed');
+    feed.classList.remove('opacity-50');
+  }
+
+  // Use in visibility updates
+  async function updateCardVisibility() {
+    showLoadingState();
     const cards = document.querySelectorAll('.post-card');
     let visibleCards = 0;
 
@@ -357,6 +406,7 @@ title: Home
       `;
       feed.appendChild(message);
     }
+    hideLoadingState();
   }
 
   // Existing mobile menu logic
@@ -490,4 +540,71 @@ title: Home
     
     updateCardVisibility();
   });
+
+  // Add keyboard navigation for the mobile menu
+  menuToggle.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleMenu();
+    }
+  });
+
+  // Add state persistence across page reloads
+  function saveFilterState() {
+    localStorage.setItem('activeFilters', JSON.stringify(Array.from(activeFilters)));
+    localStorage.setItem('activeTags', JSON.stringify(Array.from(activeTags)));
+  }
+
+  function loadFilterState() {
+    const savedFilters = localStorage.getItem('activeFilters');
+    const savedTags = localStorage.getItem('activeTags');
+    
+    if (savedFilters) {
+      activeFilters.clear();
+      JSON.parse(savedFilters).forEach(filter => activeFilters.add(filter));
+    }
+    
+    if (savedTags) {
+      activeTags.clear();
+      JSON.parse(savedTags).forEach(tag => activeTags.add(tag));
+    }
+    
+    updateCardVisibility();
+    updateActiveTagsDisplay();
+  }
+
+  // Debounce the visibility updates for better performance with many cards
+  function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  const debouncedUpdateVisibility = debounce(updateCardVisibility, 150);
+
+  // Add a reset button to clear all filters
+  function addResetButton() {
+    const resetButton = document.createElement('button');
+    resetButton.className = 'mt-4 text-sm text-gray-500 hover:text-gray-700';
+    resetButton.textContent = 'Reset Filters';
+    resetButton.addEventListener('click', () => {
+      activeFilters.clear();
+      activeTags.clear();
+      filterLinks.forEach(link => {
+        link.classList.add('active');
+        link.setAttribute('aria-pressed', 'true');
+      });
+      updateCardVisibility();
+      updateActiveTagsDisplay();
+      saveFilterState();
+    });
+    
+    document.querySelector('.navigation').appendChild(resetButton);
+  }
 </script>
