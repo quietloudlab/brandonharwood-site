@@ -297,7 +297,6 @@ text-underline-position: from-font;
 }
 
 .post-card a .material-icon {
-  color: #666; /* subtle gray color for the icon */
   font-variation-settings: 
     'FILL' 0,
     'wght' 300,

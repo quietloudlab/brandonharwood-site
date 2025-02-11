@@ -37,19 +37,29 @@ layout: base.njk
 
       <section class="masonry-grid mt-8">
         {% for item in items %}
-          <div class="masonry-item {% if item.type == 'link' %}p-0{% else %}p-4{% endif %} bg-[#f9f9f9] rounded-lg shadow hover:shadow-lg transition-shadow">
+          <div class="masonry-item {% if item.type == 'link' or item.type == 'image' %}p-0{% else %}p-4{% endif %} bg-[#f9f9f9] rounded-lg shadow hover:shadow-lg transition-shadow">
             {% if item.type == "link" %}
               <!-- Link Preview -->
-              <a href="{{ item.content }}" target="_blank" rel="noopener noreferrer" class="block hover:underline cursor-pointer">
-                <div class="w-full h-full">
+              <div class="relative group">
+                <a href="{{ item.content }}" target="_blank" rel="noopener noreferrer" class="block hover:underline cursor-pointer">
+                  <div class="absolute top-2 right-2 w-6 h-6 shadow-sm flex items-center justify-center z-10 rounded-md ext-link">
+                    <span class="material-symbols-outlined" style="font-size: .9rem;">open_in_new</span>
+                  </div>
+                  <div class="w-full h-full">
                     <img 
-                    src="{{ linkPreviewImage[loop.index0] }}" 
-                    alt="Preview for {{ item.content }}" 
-                    class="w-full h-[240px] object-cover rounded-lg"
+                      src="{{ linkPreviewImage[loop.index0] }}" 
+                      alt="Preview for {{ item.content }}" 
+                      class="w-full h-[240px] object-cover rounded-lg"
                     />
-                </div>
-              </a>
-
+                  </div>
+                  <!-- URL Preview -->
+                  <div class="absolute bottom-0 left-0 w-full opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div class="bg-white/90 backdrop-blur-sm text-black shadow-md px-4 py-2 m-1 rounded-full text-sm font-mono truncate border border-white/20">
+                      {{ item.content }}
+                    </div>
+                  </div>
+                </a>
+              </div>
             {% elseif item.type == "image" %}
               <!-- Image Display -->
               <img src="{{ item.content }}" alt="Collection image" class="w-full h-auto rounded-md">
@@ -84,10 +94,6 @@ layout: base.njk
 </script>
 
 <style>
-  .collection-external-link {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24' fill='%23000000'%3E%3Cpath d='M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h280v80H200v560h560v-280h80v280q0 33-23.5 56.5T760-120H200Zm280-360Zm167-220 64 64-284 284H360v-67l287-281Zm133 133-63-64 32-32q12-12 31-12t31 12l32 32q12 12 12 31t-12 31l-63 2Z'/%3E%3C/svg%3E") 12 12, auto;
-  }
-
   .masonry-grid {
     columns: 3;
     column-gap: 2rem;
@@ -96,6 +102,7 @@ layout: base.njk
   .masonry-item {
     break-inside: avoid;
     margin-bottom: 2rem;
+    border: 1px solid #ddd;
   }
 
   @media (max-width: 1024px) {
@@ -114,4 +121,25 @@ layout: base.njk
       margin-bottom: 1rem;
     }
   }
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 20
+}
+.ext-link {
+  border-radius: .25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(2px);
+  transition: background-color 0.2s ease;
+}
+
+/* Add hover state when parent link is hovered */
+a:hover .ext-link {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
 </style>

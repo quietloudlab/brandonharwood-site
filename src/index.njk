@@ -161,13 +161,26 @@ title: Home
 
           <!-- Right Column - Content -->
           <div class="flex-1 flex flex-col gap-5">
-            <!-- Image (if exists) -->
-            {% if post.data.image %}
-              <div class="w-full h-[400px] rounded overflow-hidden flex items-center justify-center">
+            {% if post.data.type == "made thing" and post.data.link %}
+              <div class="relative">
+                <div class="absolute top-2 right-2 w-6 h-6 shadow-sm flex items-center justify-center z-10 rounded-md ext-link">
+                  <span class="material-symbols-outlined" style="font-size: .9rem;">open_in_new</span>
+                </div>
+                <div class="w-full h-[250px] md:h-[400px] rounded overflow-hidden">
+                  <img 
+                    src="{{ post.data.link | linkPreviewImage }}" 
+                    alt="Preview for {{ post.data.title }}" 
+                    class="w-full h-full object-cover object-center"
+                  />
+                </div>
+              </div>
+            {% elif post.data.image %}
+              <!-- Regular Image Display -->
+              <div class="w-full h-[250px] md:h-[400px] rounded overflow-hidden">
                 <img 
                   src="{{ post.data.image }}" 
                   alt="{{ post.data.image_alt }}" 
-                  class="w-full h-full object-cover"
+                  class="w-full h-full object-cover object-center"
                 >
               </div>
             {% endif %}
@@ -175,24 +188,20 @@ title: Home
             <!-- Title -->
             <h2 class="text-black text-[2rem] font-manrope font-semibold">
               {% if post.data.type == "made thing" %}
-                <div class="flex flex-col gap-1">
-                  <a 
-                    href="{{ post.url }}" 
-                    onclick="saveScrollPosition()"
-                    class="hover:text-[#001EFF] transition-colors"
-                  >{{ post.data.title }}</a>
-                  {% if post.data.link %}
-                    <a 
-                      href="{{ post.data.link }}" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      class="text-sm font-manrope text-[#666666] hover:text-[#001EFF] transition-colors flex items-center gap-1"
-                    >
-                      view this thing
-                      <span class="material-icon material-icon--small">open_in_new</span>
-                    </a>
-                  {% endif %}
-                </div>
+                <a 
+                  href="{{ post.data.link }}" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hover:text-[#001EFF] transition-colors group inline-flex items-baseline flex-wrap gap-x-2"
+                >
+                  {{ post.data.title }}
+                  <span 
+                    class="text-sm font-manrope text-black md:opacity-0 md:group-hover:opacity-100 md:text-[#001EFF] transition-all inline-flex items-center gap-1 md:group-hover:text-[#2d46ff] relative -top-[0.125em]"
+                  >
+                    view this thing
+                    <span class="material-icon material-icon--small">open_in_new</span>
+                  </span>
+                </a>
               {% else %}
                 <a 
                   href="{{ post.url }}" 

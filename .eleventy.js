@@ -176,6 +176,18 @@ module.exports = function(eleventyConfig) {
     return tags ? tags.filter(tag => !defaultTags.includes(tag)) : [];
   });
 
+  eleventyConfig.addFilter("linkPreviewImage", async function(url) {
+    if (!url) return '';
+    
+    try {
+      const response = await axios.get(`https://api.microlink.io/?url=${url}`);
+      return response.data?.data?.image?.url || 'https://via.placeholder.com/400';
+    } catch (error) {
+      console.error(`Error fetching link preview for ${url}:`, error);
+      return 'https://via.placeholder.com/400';
+    }
+  });
+
 // Filters and Passthrough Copies (keep everything else as-is)
 eleventyConfig.addPassthroughCopy("src/images");
 eleventyConfig.addPassthroughCopy("src/static");
