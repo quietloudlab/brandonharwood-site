@@ -4,7 +4,7 @@ A personal and experimental blog and portfolio site built with Eleventy, Tailwin
 - CSS with [TailwindCSS](https://tailwindcss.com/)
 - Content Management System using [Netlify CMS](https://www.netlifycms.org/)
 
-## 🛠️ Tech Stack
+🛠️ Tech Stack
 
 - **Static Site Generator**: Eleventy (11ty)
 - **CSS Framework**: TailwindCSS
