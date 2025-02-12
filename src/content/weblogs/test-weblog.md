@@ -11,4 +11,4 @@ tags:
 comments: true
 sharing: true
 ---
-Hello!
+Hello! This is a test weblog. I'm still figuring out tags.
