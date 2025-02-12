@@ -3,121 +3,128 @@ layout: base.njk
 title: Contact
 ---
 
-<div class="min-h-screen flex flex-col md:flex-row">
-  <!-- Sidebar -->
-  <aside class="relative md:fixed bg-white/[0.01] backdrop-blur-xl md:sticky md:top-0 sidebar-width p-4 back-nav z-40 md:h-screen flex flex-col">
-    <div class="flex flex-col flex-1 min-h-0">
-      <div class="mt-0">
-        <!-- Back Button -->
-        <button 
-          onclick="handleBack()"
-          class="flex items-center gap-2 text-[#333333] hover:text-[#001EFF] font-baskerville text-[1rem] transition-colors"
-          aria-label="Go back to previous page"
+<article class="flex flex-col items-center p-8 md:px-20 pt-16 pb-16 gap-6">
+  <div class="w-full max-w-[75rem]">
+    <!-- Back Button -->
+    <button 
+      onclick="handleBack()"
+      class="flex items-center gap-2 text-[#333333] hover:text-[#001EFF] font-baskerville text-[1rem] transition-colors mb-8"
+      aria-label="Go back to previous page"
+    >
+      <span aria-hidden="true">←</span>
+      <span>back</span>
+    </button>
+
+    <!-- Header -->
+    <header class="flex flex-col gap-4 pb-6 border-b border-[#C0C0C0]">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="w-full md:max-w-[10.25rem]">
+          <div class="text-black text-[0.75rem] font-italic font-baskerville italic underline leading-6">
+            contact
+          </div>
+        </div>
+        <div class="flex-1">
+          <h1 class="text-black text-[2rem] font-manrope font-semibold mb-4">Contact</h1>
+          <p class="text-black font-baskerville text-[1rem] leading-7">Have a question or want to get in touch? Send me a message using the form below.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="flex flex-col md:flex-row gap-4 py-8">
+      <!-- Left Column Spacer -->
+      <div class="hidden md:block md:w-[10.25rem]"></div>
+
+      <!-- Right Column - Content -->
+      <div class="flex-1">
+        <form 
+          id="contactForm"
+          class="max-w-[40rem] space-y-6"
+          action="/submit-form" 
+          method="POST"
         >
-          <span aria-hidden="true">←</span>
-          <span>back</span>
-        </button>
+          <div class="space-y-2">
+            <label 
+              for="name" 
+              class="block text-[0.875rem] font-manrope"
+            >
+              Name
+            </label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              required
+              class="w-full p-3 border border-[#e3e3e3] rounded-lg font-baskerville focus:outline-none focus:border-[#001EFF] focus:ring-1 focus:ring-[#001EFF] transition-colors"
+              aria-required="true"
+            >
+          </div>
+
+          <div class="space-y-2">
+            <label 
+              for="email" 
+              class="block text-[0.875rem] font-manrope"
+            >
+              Email
+            </label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required
+              class="w-full p-3 border border-[#e3e3e3] rounded-lg font-baskerville focus:outline-none focus:border-[#001EFF] focus:ring-1 focus:ring-[#001EFF] transition-colors"
+              aria-required="true"
+            >
+          </div>
+
+          <div class="space-y-2">
+            <label 
+              for="message" 
+              class="block text-[0.875rem] font-manrope"
+            >
+              Message
+            </label>
+            <textarea 
+              id="message" 
+              name="message" 
+              required
+              rows="6"
+              class="w-full p-3 border border-[#e3e3e3] rounded-lg font-baskerville focus:outline-none focus:border-[#001EFF] focus:ring-1 focus:ring-[#001EFF] transition-colors resize-none"
+              aria-required="true"
+            ></textarea>
+          </div>
+
+          <div class="pt-4">
+            <button 
+              type="submit"
+              class="px-6 py-3 bg-[#001EFF] text-white rounded-lg font-manrope text-[0.875rem] hover:bg-[#0018CC] focus:outline-none focus:ring-2 focus:ring-[#001EFF] focus:ring-offset-2 transition-colors"
+            >
+              Send Message
+            </button>
+          </div>
+        </form>
+
+        <div 
+          id="formSuccess" 
+          class="hidden mt-6 p-4 bg-green-50 border border-green-200 rounded-lg"
+        >
+          <p class="text-green-800 font-baskerville">
+            Thank you for your message! I'll get back to you soon.
+          </p>
+        </div>
+
+        <div 
+          id="formError" 
+          class="hidden mt-6 p-4 bg-red-50 border border-red-200 rounded-lg"
+        >
+          <p class="text-red-800 font-baskerville">
+            There was an error sending your message. Please try again.
+          </p>
+        </div>
       </div>
     </div>
-  </aside>
-
-  <!-- Main Content -->
-  <main class="flex-1 p-8 md:px-20 pt-16 pb-16">
-    <div class="max-w-[75rem] mx-auto">
-      <header class="mb-12">
-        <h1 class="text-[2rem] font-manrope font-semibold mb-4">Contact</h1>
-        <p class="text-black font-baskerville text-[1rem] leading-7">
-          Have a question or want to get in touch? Send me a message using the form below.
-        </p>
-      </header>
-
-      <form 
-        id="contactForm"
-        class="max-w-[40rem] space-y-6"
-        action="/submit-form" 
-        method="POST"
-      >
-        <div class="space-y-2">
-          <label 
-            for="name" 
-            class="block text-[0.875rem] font-manrope"
-          >
-            Name
-          </label>
-          <input 
-            type="text" 
-            id="name" 
-            name="name" 
-            required
-            class="w-full p-3 border border-[#e3e3e3] rounded-lg font-baskerville focus:outline-none focus:border-[#001EFF] focus:ring-1 focus:ring-[#001EFF] transition-colors"
-            aria-required="true"
-          >
-        </div>
-
-        <div class="space-y-2">
-          <label 
-            for="email" 
-            class="block text-[0.875rem] font-manrope"
-          >
-            Email
-          </label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email" 
-            required
-            class="w-full p-3 border border-[#e3e3e3] rounded-lg font-baskerville focus:outline-none focus:border-[#001EFF] focus:ring-1 focus:ring-[#001EFF] transition-colors"
-            aria-required="true"
-          >
-        </div>
-
-        <div class="space-y-2">
-          <label 
-            for="message" 
-            class="block text-[0.875rem] font-manrope"
-          >
-            Message
-          </label>
-          <textarea 
-            id="message" 
-            name="message" 
-            required
-            rows="6"
-            class="w-full p-3 border border-[#e3e3e3] rounded-lg font-baskerville focus:outline-none focus:border-[#001EFF] focus:ring-1 focus:ring-[#001EFF] transition-colors resize-none"
-            aria-required="true"
-          ></textarea>
-        </div>
-
-        <div class="pt-4">
-          <button 
-            type="submit"
-            class="px-6 py-3 bg-[#001EFF] text-white rounded-lg font-manrope text-[0.875rem] hover:bg-[#0018CC] focus:outline-none focus:ring-2 focus:ring-[#001EFF] focus:ring-offset-2 transition-colors"
-          >
-            Send Message
-          </button>
-        </div>
-      </form>
-
-      <div 
-        id="formSuccess" 
-        class="hidden mt-6 p-4 bg-green-50 border border-green-200 rounded-lg"
-      >
-        <p class="text-green-800 font-baskerville">
-          Thank you for your message! I'll get back to you soon.
-        </p>
-      </div>
-
-      <div 
-        id="formError" 
-        class="hidden mt-6 p-4 bg-red-50 border border-red-200 rounded-lg"
-      >
-        <p class="text-red-800 font-baskerville">
-          There was an error sending your message. Please try again.
-        </p>
-      </div>
-    </div>
-  </main>
-</div>
+  </div>
+</article>
 
 <script>
   const form = document.getElementById('contactForm');

@@ -213,12 +213,16 @@ title: Home
 
             <!-- Description -->
             <div class="text-black prose font-baskerville text-[1rem] leading-7">
-              {% if post.data.description %}
-                {{ post.data.description }}
+              {% if post.data.type == "weblog" %}
+                {{ post | getPreviewContent }}
               {% else %}
-                {% set excerpt = post | getExcerpt %}
-                {% if excerpt %}
-                  {{ excerpt }}
+                {% if post.data.description %}
+                  {{ post.data.description }}
+                {% else %}
+                  {% set excerpt = post | getExcerpt %}
+                  {% if excerpt %}
+                    {{ excerpt }}
+                  {% endif %}
                 {% endif %}
               {% endif %}
             </div>

@@ -188,6 +188,26 @@ module.exports = function(eleventyConfig) {
     }
   });
 
+  eleventyConfig.addFilter('getPreviewContent', (post) => {
+    if (!post.templateContent) return '';
+    
+    // Remove frontmatter and HTML tags but preserve content
+    const content = post.templateContent
+      .replace(/^---[\s\S]*?---/, '')     // Remove frontmatter
+      .replace(/<[^>]+>/g, '')            // Remove HTML tags without adding spaces
+      .replace(/[\u200B-\u200D\uFEFF]/g, '')  // Remove zero-width spaces
+      .replace(/\s+/g, ' ')               // Normalize all whitespace to single spaces
+      .trim();                            // Remove leading/trailing whitespace
+    
+    // Split into words and take first 200
+    const words = content.split(' ').slice(0, 200);
+    
+    // Add ellipsis if content was truncated
+    const ellipsis = content.split(' ').length > 200 ? '...' : '';
+    
+    return words.join(' ') + ellipsis;
+  });
+
 // Filters and Passthrough Copies (keep everything else as-is)
 eleventyConfig.addPassthroughCopy("src/images");
 eleventyConfig.addPassthroughCopy("src/static");

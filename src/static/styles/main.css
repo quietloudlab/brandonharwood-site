@@ -2145,6 +2145,10 @@ text-underline-position: from-font;
     margin-bottom: 0px;
   }
 
+  .md\:block {
+    display: block;
+  }
+
   .md\:hidden {
     display: none;
   }
@@ -2159,6 +2163,14 @@ text-underline-position: from-font;
 
   .md\:w-60 {
     width: 15rem;
+  }
+
+  .md\:w-\[10\.25rem\] {
+    width: 10.25rem;
+  }
+
+  .md\:max-w-\[10\.25rem\] {
+    max-width: 10.25rem;
   }
 
   .md\:max-w-\[8\.25rem\] {
