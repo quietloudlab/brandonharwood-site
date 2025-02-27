@@ -60,6 +60,7 @@ layout: base.njk
                   </div>
                 </a>
               </div>
+
             {% elseif item.type == "image" %}
               <!-- Image Display -->
               <img src="{{ item.content }}" alt="Collection image" class="w-full h-auto rounded-md">
@@ -72,6 +73,116 @@ layout: base.njk
                   <span class="block mt-2 text-xs text-[#666666]">— {{ item.note }}</span>
                 {% endif %}
               </blockquote>
+
+            {% elseif item.type == "video" %}
+              <!-- Video Content -->
+              <div class="video-container">
+                {% if item.source_type == "embed" %}
+                  <!-- Embedded Video -->
+                  <div class="aspect-w-16 aspect-h-9">
+                    {{ item.embed_code | safe }}
+                  </div>
+                {% elseif item.source_type == "url" %}
+                  <!-- Video URL -->
+                  <video 
+                    controls
+                    class="w-full rounded-lg"
+                    preload="metadata"
+                  >
+                    <source src="{{ item.content }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                {% else %}
+                  <!-- Uploaded Video -->
+                  <video 
+                    controls
+                    class="w-full rounded-lg"
+                    preload="metadata"
+                  >
+                    <source src="{{ item.content }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                {% endif %}
+              </div>
+
+            {% elseif item.type == "audio" %}
+              <!-- Audio Content -->
+              <div class="audio-container">
+                {% if item.source_type == "embed" %}
+                  <!-- Embedded Audio -->
+                  {{ item.embed_code | safe }}
+                {% else %}
+                  <!-- Audio URL or Upload -->
+                  <audio 
+                    controls
+                    class="w-full"
+                    preload="metadata"
+                  >
+                    <source src="{{ item.content }}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                  </audio>
+                {% endif %}
+              </div>
+
+            {% elseif item.type == "pdf" %}
+              <!-- PDF Display -->
+              <div class="pdf-container">
+                <div class="pdf-preview bg-white p-4 rounded-lg">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="material-symbols-outlined text-red-500">picture_as_pdf</span>
+                    <a 
+                      href="{{ item.content }}" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      class="text-[#001EFF] hover:underline flex items-center gap-1"
+                    >
+                      Open PDF
+                      <span class="material-symbols-outlined" style="font-size: .9rem;">open_in_new</span>
+                    </a>
+                  </div>
+                  <iframe
+                    src="{{ item.content }}"
+                    class="w-full h-[400px] border-0 rounded"
+                    title="PDF Preview"
+                  ></iframe>
+                </div>
+              </div>
+
+            {% elseif item.type == "bin" %}
+              <!-- Binary File Display -->
+              <div class="bin-container">
+                <div class="flex items-center justify-between p-4 bg-white rounded-lg">
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined">file_present</span>
+                    <span class="font-mono text-sm truncate">{{ item.content | split('/') | last }}</span>
+                  </div>
+                  <a 
+                    href="{{ item.content }}" 
+                    download
+                    class="text-[#001EFF] hover:underline flex items-center gap-1"
+                  >
+                    Download
+                    <span class="material-symbols-outlined" style="font-size: .9rem;">download</span>
+                  </a>
+                </div>
+              </div>
+
+            {% elseif item.type == "dir" %}
+              <!-- Directory Structure Display -->
+              <div class="dir-container">
+                <div class="bg-white p-4 rounded-lg">
+                  <div class="font-mono text-sm whitespace-pre-wrap">
+                    {% set structure = item.dir_structure | fromJson %}
+                    {{ structure | dump(2) | safe }}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if item.note and item.type != "snippet" %}
+              <div class="mt-2 text-xs text-[#666666] italic">
+                {{ item.note }}
+              </div>
             {% endif %}
           </div>
         {% endfor %}

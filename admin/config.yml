@@ -14,9 +14,9 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Date", name: "date", widget: "datetime" }
-      - { label: "Layout", name: "layout", widget: "hidden", default: "post" }  # Automatically assign layout
+      - { label: "Layout", name: "layout", widget: "hidden", default: "post" }
       - { label: "Body", name: "body", widget: "markdown" }
-      - { label: "Featured Image", name: "image", widget: "image", required: false }  # Optional Image
+      - { label: "Featured Image", name: "image", widget: "image", required: false }
       - { label: "Tags", name: "tags", widget: "list", allow_add: true }
       - { label: "Enable Comments", name: "comments", widget: "boolean", default: true }
       - { label: "Enable Sharing", name: "sharing", widget: "boolean", default: true }
@@ -36,8 +36,48 @@ collections:
           name: "items", 
           widget: "list",
           fields: [
-            { label: "Type", name: "type", widget: "select", options: ["link", "image", "snippet"] },
-            { label: "Content", name: "content", widget: "string", hint: "URL, image path, or text snippet" },
+            { 
+              label: "Type", 
+              name: "type", 
+              widget: "select", 
+              options: [
+                "link", 
+                "image", 
+                "snippet",
+                "video",
+                "audio",
+                "pdf",
+                "bin",
+                "dir"
+              ]
+            },
+            { label: "Content", name: "content", widget: "string", hint: "URL, file path, or text content" },
+            { 
+              label: "Source Type", 
+              name: "source_type", 
+              widget: "select", 
+              options: [
+                "url",
+                "upload",
+                "embed"
+              ],
+              required: false,
+              hint: "For media content, specify if it's a URL, uploaded file, or embed code"
+            },
+            { 
+              label: "Embed Code", 
+              name: "embed_code", 
+              widget: "text", 
+              required: false,
+              hint: "If using embed source type, paste the embed code here"
+            },
+            { 
+              label: "Directory Structure", 
+              name: "dir_structure", 
+              widget: "text", 
+              required: false,
+              hint: "For dir type, specify the directory structure in JSON format"
+            },
             { label: "Note", name: "note", widget: "text", required: false }
           ]
         }
