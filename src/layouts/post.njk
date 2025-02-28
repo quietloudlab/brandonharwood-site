@@ -32,10 +32,10 @@ layout: base.njk
 
   <!-- Main Content -->
   <main class="flex-1 p-8 md:px-20 pt-16 pb-16">
-    <div class="max-w-[75rem] mx-auto">
+    <div class="max-w-[600px] mx-auto">
       <!-- Post Header -->
-      <header class="flex flex-col gap-4 pb-6 border-b border-[#C0C0C0]">
-        <div class="flex-1">
+      <header class="flex flex-col md:flex-row gap-4 pb-6 border-b border-[#C0C0C0]">
+        <div class="flex-1 min-w-0">
           <h1 class="site-header w-full text-[2rem] font-manrope font-semibold">{{ title }}</h1>
           {% if description %}
             <p class="text-black font-baskerville text-[1rem] leading-7">{{ description }}</p>
@@ -43,13 +43,15 @@ layout: base.njk
         </div>
         
         {% if image %}
-          <div class="mb-8">
-            <img 
-              src="{{ image }}" 
-              alt="{{ image_alt or 'Featured image' }}"
-              class="max-h-[400px] w-auto object-cover rounded-lg"
-              loading="eager"
-            >
+          <div class="w-full md:w-[300px] md:ml-8 flex-shrink-0">
+            <a href="{{ image }}" target="_blank" rel="noopener noreferrer" aria-label="Open full image in new tab">
+              <img 
+                src="{{ image }}" 
+                alt="{{ image_alt or 'Featured image' }}"
+                class="w-full h-auto max-h-[400px] object-cover rounded-lg hover:opacity-90 transition-opacity"
+                loading="eager"
+              >
+            </a>
           </div>
         {% endif %}
       </header>
