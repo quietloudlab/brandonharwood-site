@@ -32,4 +32,6 @@ items:
       more tacitly one selects from among the tools and techniques available,
       the more open and exploratory the design process."'
     note: Also from Design Unbound
+  - type: image
+    content: src/static/images/scroll.png
 ---
